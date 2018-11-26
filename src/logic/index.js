@@ -2,6 +2,8 @@ import pluralize from 'pluralize'
 
 const LOGIC = {
     formatLabel(label) {
+        if (typeof label !== 'string') throw Error('Invalid argument passed as label')
+
         let words = label.split('_')
         words.forEach(function(word, i) {
             words[i] = word.charAt(0).toUpperCase() + word.slice(1)
@@ -11,6 +13,8 @@ const LOGIC = {
     },
 
     secondsToTime(time) {
+        if (!time || typeof time !== 'number') throw Error('Invalid argument passed as time')
+
         const minutes = Math.floor(time / 60);
         const seconds = ('0' + Math.floor(time - minutes * 60)).slice(-2);
         return minutes + ':' + seconds;
