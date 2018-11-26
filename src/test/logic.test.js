@@ -15,15 +15,17 @@ describe('formating key into a label', () => {
     })
 
     test('fail on empty argument', () => {
+        let label
         expect(() => {
-            LOGIC.formatLabel()
-        }).toThrow('Invalid argument passed as label');
+            LOGIC.formatLabel(label)
+        }).toThrow(`Invalid argument ${label}`);
     })
 
     test('fail on non string argument', () => {
+        let label = 123
         expect(() => {
-            LOGIC.formatLabel(123)
-        }).toThrow('Invalid argument passed as label');
+            LOGIC.formatLabel(label)
+        }).toThrow(`Invalid argument ${label}`);
     })
 })
 
@@ -33,15 +35,17 @@ describe('format seconds into readable time', () => {
     })
 
     test('fail on empty argument', () => {
+        let time
         expect(() => {
-            LOGIC.secondsToTime()
-        }).toThrow('Invalid argument passed as time');
+            LOGIC.secondsToTime(time)
+        }).toThrow(`Invalid argument ${time}`);
     })
 
     test('fail on non integer argument', () => {
+        let time = '30'
         expect(() => {
-            LOGIC.secondsToTime('300')
-        }).toThrow('Invalid argument passed as time');
+            LOGIC.secondsToTime(time)
+        }).toThrow(`Invalid argument ${time}`);
     })
 })
 
@@ -86,6 +90,24 @@ describe('count songs and albums', () => {
 
         test('albums', () => {
             expect(LOGIC.countAlbums(arr)).toBe('5 albums')
+        })
+    })
+
+    describe('fail on non array', () => {
+        beforeEach(() => {
+            arr = ''
+        })
+
+        test('songs', () => {
+            expect(() => {
+                LOGIC.countSongs(arr)
+            }).toThrow(`Invalid argument ${arr}`);
+        })
+
+        test('albums', () => {
+            expect(() => {
+                LOGIC.countAlbums(arr)
+            }).toThrow(`Invalid argument ${arr}`);
         })
     })
 })
