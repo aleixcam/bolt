@@ -1,4 +1,4 @@
-import PLAYER from '../logic/player'
+import PLAYER from '../../logic/player'
 
 describe('player', () => {
     let mockCallback, songs = []

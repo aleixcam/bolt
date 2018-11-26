@@ -1,4 +1,4 @@
-import LOGIC from '../logic'
+import LOGIC from '../../logic'
 
 describe('formating key into a label', () => {
     test('format username to equal Username', () => {
