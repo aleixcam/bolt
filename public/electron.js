@@ -1,7 +1,8 @@
 require('./frozenenv')
-const path = require("path")
-const { app, BrowserWindow, ipcMain } = require("electron")
-const isDev = require("electron-is-dev")
+const path = require('path')
+const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const isDev = require('electron-is-dev')
+const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
 // const os = require ('os')
 // const username = os.userInfo().username;
@@ -25,9 +26,9 @@ function createMainWindow() {
     })
 
 	if (isDev) {
-        mainWindow.loadURL("http://localhost:3000")
+        mainWindow.loadURL('http://localhost:3000')
 	} else {
-        mainWindow.loadURL(`file://${path.join(__dirname, "../build/index.html")}`)
+        mainWindow.loadURL('file://' + path.join(__dirname, '../build/index.html'))
 	}
 
     mainWindow.on("closed", () => (mainWindow = null))
@@ -53,16 +54,84 @@ function createPreloaderWindow() {
 		preloaderWindow.loadURL('file://' + path.join(__dirname, '../build/preloader.html'))
 	}
 
-    preloaderWindow.on("closed", () => (preloaderWindow = null))
+    preloaderWindow.on('closed', () => (preloaderWindow = null))
 
 	preloaderWindow.once('ready-to-show', () => {
 		preloaderWindow.show()
 	})
 }
 
+function createMainMenu() {
+	const template = [
+		{
+			label: 'File',
+			submenu: [{ role: 'about' }, { role: 'quit' }],
+		},
+		{
+			label: 'Edit',
+			submenu: [
+				{ role: 'undo' },
+				{ role: 'redo' },
+				{ type: 'separator' },
+				{ role: 'cut' },
+				{ role: 'copy' },
+				{ role: 'paste' },
+				{ role: 'pasteandmatchstyle' },
+				{ role: 'delete' },
+				{ role: 'selectall' },
+			],
+		},
+		{
+			label: 'View',
+			submenu: [
+				{ role: 'reload' },
+				{ role: 'forcereload' },
+				{ role: 'toggledevtools' },
+				{ type: 'separator' },
+				{ role: 'resetzoom' },
+				{ role: 'zoomin' },
+				{ role: 'zoomout' },
+				{ type: 'separator' },
+				{ role: 'togglefullscreen' },
+			],
+		},
+		{
+			role: 'window',
+			submenu: [{ role: 'minimize' }, { role: 'close' }],
+		},
+		{
+			role: 'help',
+			submenu: [
+				{
+					click() {
+						require('electron').shell.openExternal(
+							'https://getstream.io/winds',
+						);
+					},
+					label: 'Learn More',
+				},
+				{
+					click() {
+						require('electron').shell.openExternal(
+							'https://github.com/GetStream/Winds/issues',
+						);
+					},
+					label: 'File Issue on GitHub',
+				},
+			],
+		},
+	];
+
+	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+};
+
 app.on('ready', () => {
 	createPreloaderWindow()
-    SCAN.scanLibrary(() => createMainWindow())
+
+    SCAN.scanLibrary(() => {
+        createMainWindow()
+        createMainMenu()
+    })
 
 	ipcMain.on('songs:retrieve', function(event) {
 		const songs = SONGS.findAll()
@@ -145,10 +214,10 @@ app.on('ready', () => {
 	})
 })
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") app.quit()
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit()
 })
 
-app.on("activate", () => {
+app.on('activate', () => {
     if (mainWindow === null) createMainWindow()
 })
