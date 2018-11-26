@@ -1,5 +1,4 @@
 import LOGIC from '../logic'
-import SongsTable from '../../public/model/table/songs'
 
 describe('formating key into a label', () => {
     test('format username to equal Username', () => {
