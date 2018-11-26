@@ -1,0 +1,70 @@
+body {
+  margin: 0;
+  color: #ffffff;
+  font-family: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  user-select: none;
+  overflow: hidden;
+}
+
+input, button, textarea, :focus {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+@keyframes spinner {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.preloader {
+  position: relative;
+  height: 100vh;
+  background-color: #535c51;
+  -webkit-user-select: none;
+  -webkit-app-region: drag;
+}
+.preloader__image {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150px;
+  height: 150px;
+}
+.preloader__spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50.6%);
+  display: inline-block;
+  width: 172px;
+  height: 172px;
+}
+.preloader__spinner:after {
+  content: " ";
+  display: block;
+  width: 162px;
+  height: 162px;
+  border-radius: 50%;
+  border: 5px solid #70e100;
+  border-color: #70e100 transparent transparent transparent;
+  animation: spinner 1.8s linear infinite;
+}
+.preloader__spinner--fast:after {
+  border-color: transparent #70e100 transparent transparent;
+  animation: spinner 1s linear infinite;
+}
+
+/*# sourceMappingURL=preloader.css.map */

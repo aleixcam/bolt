@@ -1,0 +1,154 @@
+require('./frozenenv')
+const path = require("path")
+const { app, BrowserWindow, ipcMain } = require("electron")
+const isDev = require("electron-is-dev")
+
+// const os = require ('os')
+// const username = os.userInfo().username;
+
+const PARAMETERS = require('./js/parameters')
+const SONGS = require('./js/songs')
+const SCAN = require('./js/scan')
+
+let preloaderWindow
+let mainWindow;
+
+function createMainWindow() {
+    mainWindow = new BrowserWindow({
+		width: 1280,
+		height: 854,
+		show: false,
+		webPreferences: {
+			nodeIntegration: false,
+			preload: path.join(__dirname, 'preload.js')
+		}
+    })
+
+	if (isDev) {
+        mainWindow.loadURL("http://localhost:3000")
+	} else {
+        mainWindow.loadURL(`file://${path.join(__dirname, "../build/index.html")}`)
+	}
+
+    mainWindow.on("closed", () => (mainWindow = null))
+
+	mainWindow.once('ready-to-show', () => {
+        preloaderWindow.hide()
+		mainWindow.show()
+	})
+}
+
+function createPreloaderWindow() {
+	preloaderWindow = new BrowserWindow({
+		width: 240,
+		height: 240,
+		show: false,
+		frame: false,
+		resizable: false
+	})
+
+	if (isDev) {
+		preloaderWindow.loadURL('file://' + path.join(__dirname, './preloader.html'))
+	} else {
+		preloaderWindow.loadURL('file://' + path.join(__dirname, '../build/preloader.html'))
+	}
+
+    preloaderWindow.on("closed", () => (preloaderWindow = null))
+
+	preloaderWindow.once('ready-to-show', () => {
+		preloaderWindow.show()
+	})
+}
+
+app.on('ready', () => {
+	createPreloaderWindow()
+    SCAN.scanLibrary(() => createMainWindow())
+
+	ipcMain.on('songs:retrieve', function(event) {
+		const songs = SONGS.findAll()
+
+		let pending = songs.length
+		songs.forEach((song, index) => {
+			SCAN.getMetadata(song.path, (err, data) => {
+				if (err) throw Error(err)
+
+				songs[index].albumartist = data.albumartist
+				songs[index].cover = `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}`
+				songs[index].rating = data.rating[0].rating
+
+				if (!--pending) event.returnValue = songs
+			})
+		})
+	})
+
+	ipcMain.on('parameters:retrieve', function(event) {
+		event.returnValue = PARAMETERS.findAll()
+	})
+
+	ipcMain.on('parameters:update', function(event, query) {
+		const parameter = PARAMETERS.update(query)
+		event.sender.send('parameters:update:reply', parameter)
+	})
+
+	ipcMain.on('songs:findAll', function(event) {
+		const songs = SONGS.findAll()
+		event.sender.send('songs:findAll:reply', songs)
+	})
+
+	ipcMain.on('songs:groupByAlbums', function(event, songs) {
+		const albums = SONGS.groupByAlbums(songs)
+		event.sender.send('songs:groupByAlbums:reply', albums)
+	})
+
+	ipcMain.on('songs:groupByArtists', function(event, songs) {
+		const artists = SONGS.groupByArtists(songs)
+		event.sender.send('songs:groupByArtists:reply', artists)
+	})
+
+	ipcMain.on('songs:groupByGenres', function(event, songs) {
+		const genres = SONGS.groupByGenres(songs)
+		event.sender.send('songs:groupByGenres:reply', genres)
+	})
+
+	ipcMain.on('songs:groupByDecades', function(event, songs) {
+		const decades = SONGS.groupByDecades(songs)
+		event.sender.send('songs:groupByDecades:reply', decades)
+	})
+
+	ipcMain.on('scan:getEncoded', function(event, song) {
+		try {
+			if (!song || typeof song !== 'object') throw Error('Invalid argument passed as song')
+			if (!song.id || typeof song.id !== 'number') throw Error('Invalid id value in song argument')
+			if (!song.path || typeof song.path !== 'string') throw Error('Invalid path value in song argument')
+
+			const data = SCAN.getEncoded(song.path)
+			event.sender.send('scan:getEncoded:reply'+song.id, data)
+		} catch (e) {
+			event.sender.send('electron:error', e.message)
+		}
+	})
+
+	ipcMain.on('scan:getMetadata', function(event, song) {
+		try {
+			if (!song || typeof song !== 'object') throw Error('Invalid argument passed as song')
+			if (!song.id || typeof song.id !== 'number') throw Error('Invalid id value in song argument')
+			if (!song.path || typeof song.path !== 'string') throw Error('Invalid path value in song argument')
+
+	        SCAN.getMetadata(song.path, (err, data) => {
+				if (err) throw Error(err)
+
+				event.sender.send('scan:getMetadata:reply'+song.id, data)
+	        })
+		} catch (e) {
+			event.sender.send('electron:error', e.message)
+		}
+	})
+})
+
+app.on("window-all-closed", () => {
+    if (process.platform !== "darwin") app.quit()
+})
+
+app.on("activate", () => {
+    if (mainWindow === null) createMainWindow()
+})

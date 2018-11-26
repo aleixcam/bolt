@@ -1,0 +1,53 @@
+@import 'common';
+
+@keyframes spinner {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.preloader {
+    position: relative;
+    height: 100vh;
+    background-color: lighten($color-background, 15%);
+    -webkit-user-select: none;
+    -webkit-app-region: drag;
+
+    &__image {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 150px;
+        height: 150px;
+    }
+
+    &__spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50.6%);
+        display: inline-block;
+        width: 172px;
+        height: 172px;
+
+        &:after {
+            content: " ";
+            display: block;
+            width: 162px;
+            height: 162px;
+            border-radius: 50%;
+            border: 5px solid $color-primary;
+            border-color: $color-primary transparent transparent transparent;
+            animation: spinner 1.8s linear infinite;
+        }
+
+        &--fast:after {
+            border-color: transparent $color-primary transparent transparent;
+            animation: spinner 1s linear infinite;
+        }
+    }
+}

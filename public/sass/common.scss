@@ -1,0 +1,28 @@
+$color-primary: #70e100;
+$color-secondary: #a7b59b;
+$color-background: #2e332d;
+$color-text: #ffffff;
+$header-height: 80px;
+$sidenav-width: 200px;
+
+body {
+    margin: 0;
+    color: $color-text;
+    font-family: Whitney, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    user-select: none;
+    overflow: hidden;
+}
+
+input, button, textarea, :focus {
+    outline: none;
+}
+
+::-webkit-scrollbar {
+    background-color: transparent;
+    width: .5rem;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+    background: transparentize(#000, .5);
+}

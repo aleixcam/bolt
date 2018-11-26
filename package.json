@@ -1,0 +1,79 @@
+{
+  "name": "bolt",
+  "version": "0.8.1",
+  "description": "Audio Player and Library Manager for lovers of music",
+  "author": "Aleix Caminal <aleixcam96@gmail.com> (https://github.com/aleixcam/)",
+  "license": "MIT",
+  "private": true,
+  "main": "public/electron.js",
+  "homepage": "./",
+  "scripts": {
+    "react-start": "react-scripts start",
+    "react-build": "react-scripts build",
+    "react-test": "react-scripts test --env=jsdom",
+    "react-eject": "react-scripts eject",
+    "electron-build": "electron-builder",
+    "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
+    "build": "yarn react-build && yarn electron-build",
+    "dist": "yarn react-build && electron-builder --publish=always",
+    "lilli": "lilli"
+  },
+  "build": {
+    "appId": "com.bolt.app",
+    "compression": "normal",
+    "productName": "Bolt",
+    "directories": {
+      "buildResources": "build",
+      "output": "dist"
+    },
+    "mac": {
+      "icon": "assets/bolt.icns",
+      "type": "distribution",
+      "publish": {
+        "provider": "s3",
+        "bucket": "s3.bolt.com"
+      },
+      "category": "public.app-category.music"
+    },
+    "win": {
+      "icon": "assets/bolt.ico",
+      "publish": {
+        "provider": "s3",
+        "bucket": "s3.bolt.com"
+      }
+    },
+    "linux": {
+      "icon": "assets/bolt.png",
+      "description": "Audio Player and Library Manager for lovers of music",
+      "category": "Audio;Player",
+      "publish": {
+        "provider": "s3",
+        "bucket": "s3.bolt.com"
+      }
+    }
+  },
+  "dependencies": {
+    "cross-env": "5.1.6",
+    "electron-is-dev": "0.3.0",
+    "fs-extra": "^7.0.1",
+    "lilli": "^0.2.2",
+    "music-metadata": "^3.2.0",
+    "pluralize": "^7.0.0",
+    "react": "16.4.0",
+    "react-dom": "16.4.0",
+    "react-modal": "^3.6.1"
+  },
+  "devDependencies": {
+    "concurrently": "3.5.1",
+    "electron": "^3.0.10",
+    "electron-builder": "^20.15.1",
+    "react-scripts": "^2.1.1",
+    "wait-on": "2.1.0"
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
+}
