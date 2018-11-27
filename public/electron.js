@@ -65,7 +65,27 @@ function createMainMenu() {
 	const template = [
 		{
 			label: 'File',
-			submenu: [{ role: 'about' }, { role: 'quit' }],
+			submenu: [
+                { role: 'about' },
+                { type: 'separator' },
+                {
+                    label: 'Preferences',
+                    accelerator: 'CmdOrCtrl+,',
+                    click () { mainWindow.webContents.send('modal:parameters') }
+                },
+                { type: 'separator' },
+                {
+                    label: 'Scan Library',
+                    click () {
+                        mainWindow.webContents.send('scan:start')
+                        SCAN.scanLibrary(() => {
+                            mainWindow.webContents.send('scan:end')
+                        })
+                    }
+                },
+                { type: 'separator' },
+                { role: 'quit' }
+            ]
 		},
 		{
 			label: 'Edit',
@@ -78,8 +98,8 @@ function createMainMenu() {
 				{ role: 'paste' },
 				{ role: 'pasteandmatchstyle' },
 				{ role: 'delete' },
-				{ role: 'selectall' },
-			],
+				{ role: 'selectall' }
+			]
 		},
 		{
 			label: 'View',
@@ -92,37 +112,28 @@ function createMainMenu() {
 				{ role: 'zoomin' },
 				{ role: 'zoomout' },
 				{ type: 'separator' },
-				{ role: 'togglefullscreen' },
-			],
+				{ role: 'togglefullscreen' }
+			]
 		},
 		{
 			role: 'window',
-			submenu: [{ role: 'minimize' }, { role: 'close' }],
+			submenu: [
+                { role: 'minimize' },
+                { role: 'close' }
+            ]
 		},
 		{
 			role: 'help',
 			submenu: [
 				{
-					click() {
-						require('electron').shell.openExternal(
-							'https://getstream.io/winds',
-						);
-					},
-					label: 'Learn More',
-				},
-				{
-					click() {
-						require('electron').shell.openExternal(
-							'https://github.com/GetStream/Winds/issues',
-						);
-					},
-					label: 'File Issue on GitHub',
-				},
-			],
-		},
-	];
+                    label: 'Learn More',
+					click() { require('electron').shell.openExternal('https://github.com/aleixcam/bolt') }
+				}
+			]
+		}
+	]
 
-	Menu.setApplicationMenu(Menu.buildFromTemplate(template));
+	Menu.setApplicationMenu(Menu.buildFromTemplate(template))
 };
 
 app.on('ready', () => {
