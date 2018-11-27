@@ -3,8 +3,9 @@ const path = require("path")
 const { app, BrowserWindow, ipcMain } = require("electron")
 const isDev = require("electron-is-dev")
 
-// const os = require ('os')
-// const username = os.userInfo().username;
+// const os = require('os')
+// const platform = os.platform()
+// const username = os.userInfo().username
 
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
