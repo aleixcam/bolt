@@ -77,6 +77,7 @@ function createMainMenu() {
                 {
                     label: 'Scan Library',
                     click () {
+                        Nucleus.track("SCANNED_LIBRARY")
                         mainWindow.webContents.send('scan:start')
                         SCAN.scanLibrary(() => {
                             mainWindow.webContents.send('scan:end')
@@ -138,7 +139,6 @@ function createMainMenu() {
 
 app.on('ready', () => {
 	createPreloaderWindow()
-
     SCAN.scanLibrary(() => {
         createMainWindow()
         createMainMenu()
@@ -166,6 +166,7 @@ app.on('ready', () => {
 	})
 
 	ipcMain.on('parameters:update', function(event, query) {
+        Nucleus.track("CHANGED_PARAMETER_"+query.name.toUpperCase())
 		const parameter = PARAMETERS.update(query)
 		event.sender.send('parameters:update:reply', parameter)
 	})
