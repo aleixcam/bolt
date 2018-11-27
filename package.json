@@ -33,16 +33,14 @@
       "category": "public.app-category.music",
       "publish": {
         "provider": "github",
-        "owner": "aleixcam",
-        "token": "015539eba595b9720cd0e89a6a59f284da831978"
+        "owner": "aleixcam"
       }
     },
     "win": {
       "icon": "assets/bolt.ico",
       "publish": {
         "provider": "github",
-        "owner": "aleixcam",
-        "token": "015539eba595b9720cd0e89a6a59f284da831978"
+        "owner": "aleixcam"
       }
     },
     "linux": {
@@ -51,8 +49,7 @@
       "category": "Audio;Player",
       "publish": {
         "provider": "github",
-        "owner": "aleixcam",
-        "token": "015539eba595b9720cd0e89a6a59f284da831978"
+        "owner": "aleixcam"
       }
     }
   },
