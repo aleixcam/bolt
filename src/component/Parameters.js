@@ -5,7 +5,6 @@ class Parameters extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            parameters: {},
             open: false
         }
     }
@@ -15,12 +14,16 @@ class Parameters extends Component {
         this.setState({ ...parameters })
 
         window.ipcRenderer.on('modal:parameters', event => {
-            this.setState({ open: true })
+            this.setState({ open: true }, () => {
+                window.Nucleus.track("OPENED_PARAMETERS")
+            })
         })
     }
 
     closeModal = () => {
-        this.setState({ open: false })
+        this.setState({ open: false }, () => {
+            window.Nucleus.track("CLOSED_PARAMETERS")
+        })
     }
 
     handleLibraryChange = event => {

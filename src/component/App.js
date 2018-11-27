@@ -104,16 +104,22 @@ class App extends Component {
 
     handlePlay = (songs, shuffle = false) => {
         const selection = this.state.selection.getSelection()
-        selection.forEach(selected => {
-            Array.from(selected.children).forEach(child => {
-                if (child.nodeName === 'INPUT' && child.type === 'hidden') {
-                    const song = this.state.songs.find(song => song.id === parseInt(child.defaultValue, 10))
-                    if (song && !songs.find(playing => song.id === playing.id)) {
-                        songs.push(song)
+        if (selection.length > 0) {
+            window.Nucleus.track("PLAYED_SELECTED_SONGS")
+
+            selection.forEach(selected => {
+                Array.from(selected.children).forEach(child => {
+                    if (child.nodeName === 'INPUT' && child.type === 'hidden') {
+                        const song = this.state.songs.find(song => song.id === parseInt(child.defaultValue, 10))
+                        if (song && !songs.find(playing => song.id === playing.id)) {
+                            songs.push(song)
+                        }
                     }
-                }
+                })
             })
-        })
+        } else {
+            window.Nucleus.track("PLAYED_SONGS")
+        }
 
         shuffle = this.state.shuffle || shuffle
         PLAYER.play(songs, shuffle, song => {
@@ -125,25 +131,64 @@ class App extends Component {
     }
 
     handlePlayPause = () => {
-        if (this.state.currentPlaylist.length <= 0) this.handlePlay(this.state.songs)
-        this.audioPlayer.current.paused ? this.audioPlayer.current.play() : this.audioPlayer.current.pause()
+        if (this.state.currentPlaylist.length <= 0) {
+            window.Nucleus.track("PLAYED_ALL_SONGS")
+            return this.handlePlay(this.state.songs)
+        }
+
+        if (this.audioPlayer.current.paused) {
+            window.Nucleus.track("RESUMED_SONG")
+            this.audioPlayer.current.play()
+        } else {
+            window.Nucleus.track("PAUSED_SONG")
+            this.audioPlayer.current.pause()
+        }
+
         this.setState({ playing: !this.audioPlayer.current.paused })
     }
 
     handleShuffle = () => {
-        this.setState({ shuffle: !this.state.shuffle })
+        if (this.state.shuffle) {
+            this.setState({ shuffle: false }, () => {
+                window.Nucleus.track("TOGGLED_SHUFFLE_OFF")
+            })
+        } else {
+            this.setState({ shuffle: true }, () => {
+                window.Nucleus.track("TOGGLED_SHUFFLE_ON")
+            })
+        }
     }
 
     handleRepeat = () => {
-        this.setState({ repeat: this.state.repeat === 2 ? 0 : this.state.repeat + 1 })
+        switch (this.state.repeat) {
+            case 0:
+                this.setState({ repeat: 1 }, () => {
+                    window.Nucleus.track("TOGGLED_REPEAT_ALL")
+                })
+                break
+            case 1:
+                this.setState({ repeat: 2 }, () => {
+                    window.Nucleus.track("TOGGLED_REPEAT_ONE")
+                })
+                break
+            case 2:
+                this.setState({ repeat: 0 }, () => {
+                    window.Nucleus.track("TOGGLED_REPEAT_OFF")
+                })
+                break
+            default:
+                break
+        }
     }
 
     handleBackwards = () => {
         if (this.audioPlayer.current.currentTime > 5) {
+            window.Nucleus.track("REWINDED_SONG")
             this.audioPlayer.current.currentTime = 0
         } else {
             PLAYER.previous(this.state.currentPlaylist, this.state.currentSong, this.state.repeat, song => {
                 this.setState({ currentSong: song }, () => {
+                    window.Nucleus.track("CHANGED_TO_PREVIOUS_SONG")
                     this.audioPlayer.current.currentTime = 0
                     this.audioPlayer.current.play()
                 })
@@ -154,6 +199,7 @@ class App extends Component {
     handleForwards = () => {
         PLAYER.next(this.state.currentPlaylist, this.state.currentSong, this.state.shuffle, this.state.repeat, song => {
             this.setState({ currentSong: song }, () => {
+                window.Nucleus.track("CHANGED_TO_NEXT_SONG")
                 this.audioPlayer.current.currentTime = 0
                 this.audioPlayer.current.play()
             })
@@ -178,7 +224,12 @@ class App extends Component {
     handleChangeCurrent = track => {
         LOGIC.getEncoded(track)
             .then(data => Object.assign(track, { data }))
-            .then(song => this.setState({ currentSong: song }, () => this.audioPlayer.current.play()))
+            .then(song => {
+                this.setState({ currentSong: song }, () => {
+                    window.Nucleus.track("CHANGED_CURRENT_SONG")
+                    this.audioPlayer.current.play()
+                })
+            })
     }
 
     render() {
