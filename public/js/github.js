@@ -17,30 +17,25 @@ class GitHub {
 
     static latestRelease(platform, callback) {
         return this.releases()
-            .then(releases => releases.find(release => !release.prerelease && !release.draft))
-            .then(release => this.getDownloadLink(release, platform))
-            .then(link => callback(link))
-    }
-
-    static latestPreRelease(platform, callback) {
-        return this.releases()
-            .then(releases => releases.find(release => release.prerelease && !release.draft))
-            .then(release => this.getDownloadLink(release, platform))
-            .then(link => callback(link))
+            .then(releases => {
+                const release = releases.find(release => !release.prerelease && !release.draft)
+                const link = this.getDownloadLink(release, platform)
+                return callback(link, release.tag_name)
+            })
     }
 
     static getDownloadLink(release, platform) {
         let name
         switch (platform) {
             case 'linux':
-                name = `Bolt-${release.name}-mac.zip`
+                name = `bolt-${release.name}-x86_64.AppImage`
                 break
             case 'win32':
                 name = `bolt-setup-${release.name}.exe`
                 break
             case 'darwin':
             default:
-                name = `bolt-${release.name}-x86_64.AppImage`
+                name = `Bolt-${release.name}-mac.zip`
                 break
         }
 

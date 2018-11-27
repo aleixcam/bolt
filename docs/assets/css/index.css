@@ -58,6 +58,14 @@ input, button, textarea, :focus {
 .landing .header-case {
   margin: 3rem 0 2rem;
 }
+.landing .header-download {
+  margin-top: 1.5rem;
+}
+.landing .header-download-links {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1.5rem;
+}
 .landing .header__title {
   margin: 0;
   margin-bottom: 0.5rem;
@@ -72,6 +80,30 @@ input, button, textarea, :focus {
   margin: 0;
   font-size: 20px;
   font-weight: 400;
+}
+.landing .header__button {
+  padding: 0.5rem 1.75rem;
+  border-radius: 0.75rem;
+  background-color: #a7b59b;
+  color: #fff;
+  font-size: 20px;
+  text-decoration: none;
+  transition: all 0.1s linear;
+}
+.landing .header__button:hover {
+  background-color: #9fae92;
+  cursor: pointer;
+}
+.landing .header__button:active {
+  background-color: #95a686;
+  transition: none;
+}
+.landing .header__link {
+  color: #a7b59b;
+  text-decoration: none;
+}
+.landing .header__link:hover {
+  text-decoration: underline;
 }
 .landing .main {
   position: relative;
