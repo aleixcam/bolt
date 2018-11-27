@@ -4,8 +4,9 @@ const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
 const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
-// const os = require ('os')
-// const username = os.userInfo().username;
+// const os = require('os')
+// const platform = os.platform()
+// const username = os.userInfo().username
 
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
