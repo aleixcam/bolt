@@ -12,10 +12,10 @@
     "react-build": "react-scripts build",
     "react-test": "react-scripts test --env=jsdom",
     "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build": "yarn react-build && yarn electron-build",
-    "dist": "yarn react-build && electron-builder --publish=always",
+    "build": "yarn react-build && electron-builder",
+    "dist": "npx build --macos --win --linux",
+    "release": "npx build --macos --win --linux -p always",
     "test": "yarn react-test",
     "lilli": "lilli"
   },

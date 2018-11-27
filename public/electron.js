@@ -139,7 +139,6 @@ function createMainMenu() {
 
 app.on('ready', () => {
 	createPreloaderWindow()
-
     SCAN.scanLibrary(() => {
         createMainWindow()
         createMainMenu()

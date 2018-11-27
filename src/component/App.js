@@ -176,6 +176,8 @@ class App extends Component {
                     window.Nucleus.track("TOGGLED_REPEAT_OFF")
                 })
                 break
+            default:
+                break
         }
     }
 
