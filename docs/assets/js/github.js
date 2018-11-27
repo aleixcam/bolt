@@ -1,15 +1,6 @@
-const path = require('path');
-
 class GitHub {
-    constructor() {
-        this.rootUrl = 'https://api.github.com/repos'
-        this.owner = 'aleixcam'
-        this.repo = 'bolt'
-        this.api = 'releases'
-    }
-
-    releases() {
-        return fetch(path.join(this.rootUrl, this.owner, this.repo, this.api), {
+    static releases() {
+        return fetch('https://api.github.com/repos/aleixcam/bolt/releases', {
             method: 'GET'
         }).then(result => {
             return result.json()
@@ -24,7 +15,16 @@ class GitHub {
         })
     }
 
-    getDownloadLink(release, platform) {
+    static latestRelease(platform, callback) {
+        return this.releases()
+            .then(releases => {
+                const release = releases.find(release => !release.prerelease && !release.draft)
+                const link = this.getDownloadLink(release, platform)
+                return callback(link, release.tag_name)
+            })
+    }
+
+    static getDownloadLink(release, platform) {
         let name
         switch (platform) {
             case 'linux':
@@ -42,15 +42,4 @@ class GitHub {
         const asset = release.assets.find(asset => asset.name === name)
         return asset.browser_download_url
     }
-
-    latestRelease(platform, callback) {
-        return this.releases()
-            .then(releases => {
-                const release = releases.find(release => !release.prerelease && !release.draft)
-                const link = this.getDownloadLink(release, platform)
-                return callback(link, release.tag_name)
-            })
-    }
 }
-
-module.exports = GitHub
