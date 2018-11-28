@@ -57,7 +57,7 @@ const SCAN = {
 
     scanLibrary(callback) {
         const libraryDirectory = PARAMETERS.getByName('libraryDirectory').value
-    	const boltDirectory = libraryDirectory + 'Bolt/'
+    	const boltDirectory = path.join(libraryDirectory, 'Bolt')
     	const extensions = PARAMETERS.getByName('acceptedExtensions').value
 
         fs.ensureDirSync(boltDirectory)
