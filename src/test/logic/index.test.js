@@ -9,7 +9,7 @@ describe('formating key into a label', () => {
         expect(LOGIC.formatLabel('confirm_password')).toBe('Confirm Password')
     })
 
-    test('not fail on empty string', () => {
+    test('success on empty string', () => {
         expect(LOGIC.formatLabel('')).toBe('')
     })
 
@@ -31,6 +31,10 @@ describe('formating key into a label', () => {
 describe('format seconds into readable time', () => {
     test('format 300 to equal 5:00', () => {
         expect(LOGIC.secondsToTime(300)).toBe('5:00')
+    })
+
+    test('success on 0 seconds', () => {
+        expect(LOGIC.secondsToTime(0)).toBe('0:00')
     })
 
     test('fail on empty argument', () => {
