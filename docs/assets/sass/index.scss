@@ -1,5 +1,19 @@
 @import '../../../public/sass/common';
 
+@mixin fancy-click($color) {
+    transition: all .1s linear;
+
+    &:hover {
+        background-color: darken($color, 3%);
+        cursor: pointer;
+    }
+
+    &:active {
+        background-color: darken($color, 7%);
+        transition: none;
+    }
+}
+
 .landing {
     background-color: $color-background;
     user-select: auto;
@@ -14,6 +28,7 @@
         padding: 0 5rem;
         height: calc(#{$header-height} * .75);
         background-color: darken($color-background, 9%);
+        z-index: 1000;
 
         &__title {
             margin: 0;
@@ -28,80 +43,112 @@
     }
 
     .header {
-        display: grid;
-        grid-template-columns: 60% 40%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem 2rem;
+        max-height: 100vh;
         background-color: darken($color-background, 7%);
+        overflow: hidden;
 
-        &__hero {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            padding: 5rem;
+        &-case {
+            margin: 3rem 0 2rem;
+        }
+
+        &-download {
+            margin-top: 1.5rem;
+
+            &-links {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 1.5rem;
+            }
         }
 
         &__title {
             margin: 0;
-            margin-bottom: 1rem;
-            padding: 0 2rem;
-            color: $color-secondary;
+            margin-bottom: .5rem;
             font-size: 64px;
             font-weight: 400;
+            color: $color-primary;
+            font-weight: 900;
+            letter-spacing: 12px;
+            text-transform: uppercase;
         }
 
         &__text {
             margin: 0;
             font-size: 20px;
-            margin-bottom: .5rem;
-            font-weight: 600;
+            font-weight: 400;
+        }
 
-            &--highlight {
-                color: $color-secondary;
+        &__button {
+            padding: .5rem 1.75rem;
+            border-radius: .75rem;
+            background-color: $color-secondary;
+            color: #fff;
+            font-size: 20px;
+            text-decoration: none;
+            @include fancy-click($color-secondary);
+        }
+
+        &__link {
+            color: $color-secondary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
             }
         }
     }
 
     .main {
-        .showcase {
-            display: grid;
-            grid-template-columns: repeat(2, 50%);
+        position: relative;
+        box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.75);
+    }
 
-            &--odd {
-                background-color: lighten($color-background, 3%);
-            }
+    .showcase {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
 
-            &__show {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 2rem;
-            }
+        &--odd {
+            background-color: lighten($color-background, 3%);
+        }
 
-            &__image {
-                width: 100%;
-                border-radius: 1rem;
-                box-shadow: 0px 0px 25px 0px $color-primary;
-            }
+        &__show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
 
-            &__case {
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                padding: 2rem;
-            }
+        &__image {
+            position: relative;
+            width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0px 0px 25px 0px $color-primary;
+        }
 
-            &__title {
-                margin: 0;
-                margin-bottom: .5rem;
-                padding: 0 1rem;
-                color: $color-secondary;
-                font-size: 48px;
-                font-weight: 400;
-            }
+        &__case {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
 
-            &__text {
-                margin: 0;
-            }
+        &__title {
+            margin: 0;
+            margin-bottom: .5rem;
+            padding: 0 1rem;
+            color: $color-secondary;
+            font-size: 48px;
+            font-weight: 400;
+        }
+
+        &__text {
+            margin: 0;
         }
     }
 
