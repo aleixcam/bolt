@@ -30,6 +30,7 @@ class Albums extends Component {
                 albums[index] = LOGIC.hydrateAlbum(album)
             })
 
+            console.log(albums);
             this.setState({ albums })
         })
     }

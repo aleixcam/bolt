@@ -445,6 +445,9 @@ input, button, textarea, :focus {
 .app .album-songs__disk .song__title {
   margin: 0;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .app .album-songs__disk .song.selected {
   background-color: rgba(112, 225, 0, 0.5);

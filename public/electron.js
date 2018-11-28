@@ -2,7 +2,7 @@ require('./frozenenv')
 const path = require('path')
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
-const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
+// const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
@@ -154,8 +154,8 @@ app.on('ready', () => {
 				if (err) throw Error(err)
 
 				songs[index].albumartist = data.albumartist
-				songs[index].cover = `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}`
-				songs[index].rating = data.rating[0].rating
+				songs[index].cover = data.picture && `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}`
+				songs[index].rating = data.rating && data.rating[0].rating
 
 				if (!--pending) event.returnValue = songs
 			})
