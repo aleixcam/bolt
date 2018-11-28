@@ -18,9 +18,14 @@ class GitHub {
     static latestRelease(platform, callback) {
         return this.releases()
             .then(releases => {
-                const release = releases.find(release => !release.prerelease && !release.draft)
+                let release = releases.find(release => !release.prerelease && !release.draft)
+                if (!release) release = releases.find(release => release.prerelease && !release.draft)
+                if (!release) throw Error('No valid release can be found')
+
                 const link = this.getDownloadLink(release, platform)
                 return callback(link, release.tag_name)
+            }).catch(error => {
+                console.error(error)
             })
     }
 

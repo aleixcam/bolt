@@ -14,6 +14,10 @@
     }
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 .landing {
     background-color: $color-background;
     user-select: auto;
@@ -34,6 +38,9 @@
             margin: 0;
             color: $color-secondary;
             text-transform: uppercase;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 22px;
         }
 
         &__logo {
@@ -62,7 +69,7 @@
             &-links {
                 display: flex;
                 justify-content: space-around;
-                margin-top: 1.5rem;
+                margin-top: 1rem;
             }
         }
 
@@ -70,11 +77,12 @@
             margin: 0;
             margin-bottom: .5rem;
             font-size: 64px;
-            font-weight: 400;
             color: $color-primary;
             font-weight: 900;
             letter-spacing: 12px;
             text-transform: uppercase;
+            font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+            text-shadow: 0px 0px 20px #000;
         }
 
         &__text {
@@ -84,13 +92,24 @@
         }
 
         &__button {
+            display: inline-grid;
             padding: .5rem 1.75rem;
             border-radius: .75rem;
             background-color: $color-secondary;
             color: #fff;
-            font-size: 20px;
             text-decoration: none;
             @include fancy-click($color-secondary);
+
+            &--text {
+                font-size: 20px;
+            }
+
+            &--small {
+                margin: 0;
+                padding: 0;
+                color: $color-background;
+                font-size: 14px;
+            }
         }
 
         &__link {

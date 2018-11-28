@@ -5,19 +5,28 @@ GitHub.latestRelease(platform, (link, version) => {
     const downloadButton = document.createElement('a')
     downloadButton.href = link
     downloadButton.className = 'header__button'
+    download.appendChild(downloadButton)
+
+    const buttonText = document.createElement('small')
+    buttonText.className = 'header__button--text'
     switch (platform) {
         case 'linux':
-            downloadButton.innerText = 'Download for Linux'
-            break;
+            buttonText.innerText = 'Download for Linux'
+            break
         case 'win32':
-            downloadButton.innerText = 'Download for Windows'
-            break;
+            buttonText.innerText = 'Download for Windows'
+            break
         case 'darwin':
         default:
-            downloadButton.innerText = 'Download for Mac'
-            break;
+            buttonText.innerText = 'Download for Mac'
+            break
     }
-    download.appendChild(downloadButton)
+    downloadButton.appendChild(buttonText)
+
+    const versionTag = document.createElement('small')
+    versionTag.className = 'header__button--small'
+    versionTag.innerText = version
+    downloadButton.appendChild(versionTag)
 
     const downloadLinks = document.createElement('div')
     downloadLinks.className = 'header-download-links'
