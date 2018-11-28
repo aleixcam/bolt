@@ -13,7 +13,7 @@ const LOGIC = {
     },
 
     secondsToTime(time) {
-        if (!time || typeof time !== 'number') throw Error(`Invalid argument ${time}`)
+        if (typeof time !== 'number') throw Error(`Invalid argument ${time}`)
 
         const minutes = Math.floor(time / 60);
         const seconds = ('0' + Math.floor(time - minutes * 60)).slice(-2);
