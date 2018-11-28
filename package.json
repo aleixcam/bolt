@@ -15,7 +15,7 @@
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
     "test": "yarn react-test",
     "build": "yarn react-build",
-    "dist": "electron-builder",
+    "dist": "yarn react-build && electron-builder",
     "release": "yarn build && npx build --x64 --macos --win --linux -p always",
     "lilli": "lilli"
   },
