@@ -22,7 +22,6 @@ spec/.hash
 
 # dependencies
 /node_modules
-/public/data
 
 # production
 /build
@@ -40,3 +39,4 @@ config.js
 # misc
 .DS_Store
 package-lock.json
+/data
