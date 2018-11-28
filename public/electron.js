@@ -153,8 +153,9 @@ app.on('ready', () => {
 			SCAN.getMetadata(song.path, (err, data) => {
 				if (err) throw Error(err)
 
+                const cover = data.picture ? `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}` : './img/placeholder.png'
 				songs[index].albumartist = data.albumartist
-				songs[index].cover = data.picture && `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}`
+				songs[index].cover = cover
 				songs[index].rating = data.rating && data.rating[0].rating
 
 				if (!--pending) event.returnValue = songs

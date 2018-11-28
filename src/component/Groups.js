@@ -18,7 +18,6 @@ class Groups extends Component {
             window.ipcRenderer.send(`songs:${this.state.renderer}`, this.props.songs)
             window.ipcRenderer.on(`songs:${this.state.renderer}:reply`, (event, groups) => {
                 this.setState({ groups })
-                console.log(groups);
 
                 if (groups.length > 0) {
                     this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
