@@ -4,10 +4,6 @@ const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
 const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
-// const os = require('os')
-// const platform = os.platform()
-// const username = os.userInfo().username
-
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
 const SCAN = require('./js/scan')
@@ -78,9 +74,9 @@ function createMainMenu() {
                 {
                     label: 'Scan Library',
                     click () {
-                        Nucleus.track("SCANNED_LIBRARY")
                         mainWindow.webContents.send('scan:start')
                         SCAN.scanLibrary(() => {
+                            Nucleus.track("SCANNED_LIBRARY")
                             mainWindow.webContents.send('scan:end')
                         })
                     }
@@ -139,7 +135,9 @@ function createMainMenu() {
 };
 
 app.on('ready', () => {
+    if (!isDev) PARAMETERS.environmentSetup()
 	createPreloaderWindow()
+
     SCAN.scanLibrary(() => {
         createMainWindow()
         createMainMenu()
@@ -149,6 +147,8 @@ app.on('ready', () => {
 		const songs = SONGS.findAll()
 
 		let pending = songs.length
+        if (!pending) event.returnValue = []
+
 		songs.forEach((song, index) => {
 			SCAN.getMetadata(song.path, (err, data) => {
 				if (err) throw Error(err)
