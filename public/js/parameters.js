@@ -5,6 +5,8 @@ const ParametersTable = require('../model/table/parameters')
 
 const PARAMETERS = {
     environmentSetup() {
+        fs.ensureDirSync(process.env.LILLI_DATA_DIRECTORY)
+        
         const songsPath = path.join(process.env.LILLI_DATA_DIRECTORY, 'songs.json')
         const parametersPath = path.join(process.env.LILLI_DATA_DIRECTORY, 'parameters.json')
         if (!fs.existsSync(songsPath)) fs.writeFileSync(songsPath, JSON.stringify([]))
