@@ -2,7 +2,7 @@ require('./frozenenv')
 const path = require('path')
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
-const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
+const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce73')
 
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
@@ -151,12 +151,14 @@ app.on('ready', () => {
 
 		songs.forEach((song, index) => {
 			SCAN.getMetadata(song.path, (err, data) => {
-				if (err) throw Error(err)
-
-                const cover = data.picture ? `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}` : './img/placeholder.png'
-				songs[index].albumartist = data.albumartist
-				songs[index].cover = cover
-				songs[index].rating = data.rating && data.rating[0].rating
+				if (err) {
+                    SONGS.delete(song)
+                } else {
+                    const cover = data.picture ? `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}` : './img/placeholder.png'
+    				songs[index].albumartist = data.albumartist
+    				songs[index].cover = cover
+    				songs[index].rating = data.rating && data.rating[0].rating
+                }
 
 				if (!--pending) event.returnValue = songs
 			})

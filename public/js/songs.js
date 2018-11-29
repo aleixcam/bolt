@@ -67,9 +67,8 @@ const SONGS = {
         return decades
     },
 
-    delete(id) {
+    delete(song) {
         const songsTable = new SongsTable()
-        const song = songsTable.get(id)
         return songsTable.delete(song)
     }
 }
