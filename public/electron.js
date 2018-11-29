@@ -2,7 +2,7 @@ require('./frozenenv')
 const path = require('path')
 const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
-const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce73')
+const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
