@@ -111,7 +111,7 @@ class Parameters extends Component {
                 <section className={'modal-body__view'+(this.state.view==='Advanced'?' modal-body__view--active':'')}>
                     <section className="modal-body__section modal-body__section--update">
                         <button className="modal-body__button" type="button" onClick={this.handleSearchVersion}>Search for Updates</button>
-                        <p className="modal-body__text">{this.state.version ? `New version available (${this.state.version})` : 'You\'re up to date'}</p>
+                        <p className="modal-body__text">{this.state.version ? `Newer version available (${this.state.version})` : 'You\'re up to date'}</p>
                     </section>
                     <section className="modal-body__section">
                         <label className="modal-body__text checkbox">Search for a new version at startup
