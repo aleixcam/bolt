@@ -16,6 +16,7 @@ class App extends Component {
     constructor(props){
         super(props)
         this.state = {
+            version: false,
             songs: [],
             selection: createSelection(),
             view: 'Albums',
@@ -30,7 +31,13 @@ class App extends Component {
 
     componentWillMount() {
         this.retrieveSongs()
-        window.ipcRenderer.on('scan:end', event => {
+        window.ipcRenderer.on('alert:newVerson', (event, version) => {
+            this.setState({ version }, () => {
+                toast.success(`A more recent version of Bolt has been released (${this.state.version})`)
+            })
+        })
+
+        window.ipcRenderer.on('alert:scanEnd', event => {
             toast.success('Your library has been successfully updated')
             this.retrieveSongs()
         })
@@ -302,7 +309,7 @@ class App extends Component {
                 </section>
             </aside>
 
-            <Parameters />
+            <Parameters version={this.state.version} />
 
             <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
         </div>

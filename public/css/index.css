@@ -713,7 +713,7 @@ input, button, textarea, :focus {
   border-radius: 0.75rem !important;
 }
 .Toastify__toast--success {
-  background-color: #70e100;
+  background-color: #70e100 !important;
 }
 .Toastify__toast-body {
   margin: 0 !important;

@@ -20,6 +20,10 @@ class Parameters extends Component {
         })
     }
 
+    componentWillReceiveProps(props) {
+        this.setState({ version: props.version })
+    }
+
     closeModal = () => {
         this.setState({ open: false }, () => {
             window.Nucleus.track("CLOSED_PARAMETERS")
@@ -30,14 +34,38 @@ class Parameters extends Component {
         this.setState({ libraryDirectory: event.target.value })
     }
 
-    handleLibraryChange = event => {
-        console.log();
+    handleScanAlertChange = event => {
+        this.setState({ scanAlert: event.target.checked }, () => {
+            this.handleParameterUpdate('scanAlert')
+        })
+    }
+
+    handleCheckVersionChange = event => {
+        this.setState({ autoCheckVersion: event.target.checked }, () => {
+            this.handleParameterUpdate('autoCheckVersion')
+        })
+    }
+
+    handleBetaChange = event => {
+        this.setState({ betaVersions: event.target.checked }, () => {
+            this.handleParameterUpdate('betaVersions')
+        })
     }
 
     handleParameterUpdate = updated => {
         window.ipcRenderer.send('parameters:update', {
             name: updated,
             value: this.state[updated]
+        })
+    }
+
+    handleSearchVersion = () => {
+        console.log('button');
+        window.ipcRenderer.send('parameters:checkVersion')
+        window.ipcRenderer.on('parameters:checkVersion:reply', (event, version) => {
+            this.setState({ version }, () => {
+                console.log(version);
+            })
         })
     }
 
@@ -50,25 +78,25 @@ class Parameters extends Component {
                 </section>
                 <section className="modal-body__section">
                     <label className="modal-body__text checkbox">Show an alert when the library has finished its update
-                        <input className="checkbox__input" type="checkbox" onChange={this.handleScanAlertChange} checked={this.state.scanAlert}/>
+                        <input className="checkbox__input" type="checkbox" onChange={this.handleScanAlertChange} defaultChecked={this.state.scanAlert} />
                         <i className="checkmark fas fa-check"></i>
                     </label>
                 </section>
             </section>
             <section name="Advanced">
-                <section className="modal-body__section modal-body__section--update">
-                    <button className="modal-body__button" type="button">Search for Updates</button>
-                    <p className="modal-body__text">You're up to date</p>
-                </section>
                 <section className="modal-body__section">
                     <label className="modal-body__text checkbox">Search for a new version at startup
-                        <input className="checkbox__input" type="checkbox" onChange={this.handleCheckVersionChange} checked={this.state.autoCheckVersion}/>
+                        <input className="checkbox__input" type="checkbox" onChange={this.handleCheckVersionChange} defaultChecked={this.state.autoCheckVersion} />
                         <i className="checkmark fas fa-check"></i>
                     </label>
                     <label className="modal-body__text checkbox">Also search for beta versions
-                        <input className="checkbox__input" type="checkbox" onChange={this.handleBetaChange} checked={this.state.betaVersions}/>
+                        <input className="checkbox__input" type="checkbox" onChange={this.handleBetaChange} defaultChecked={this.state.betaVersions} />
                         <i className="checkmark fas fa-check"></i>
                     </label>
+                </section>
+                <section className="modal-body__section modal-body__section--update">
+                    <button className="modal-body__button" type="button" onClick={this.handleSearchVersion}>Search for Updates</button>
+                    <p className="modal-body__text">{this.state.version ? `New version available (${this.state.version})` : 'You\'re up to date'}</p>
                 </section>
             </section>
         </Modal>

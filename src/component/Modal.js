@@ -14,8 +14,16 @@ class Modal extends Component {
     }
 
     componentWillMount() {
+        this.setContent(this.props)
+    }
+
+    componentWillReceiveProps(props) {
+        this.setContent(props)
+    }
+
+    setContent = props => {
         const sections = []
-        this.props.children.forEach(child => {
+        props.children.forEach(child => {
             sections.push({
                 name: child.props.name,
                 content: child.props.children
