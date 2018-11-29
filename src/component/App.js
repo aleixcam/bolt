@@ -16,7 +16,7 @@ class App extends Component {
         this.state = {
             songs: [],
             selection: createSelection(),
-            view: 'Artists',
+            view: 'Albums',
             currentSong: {},
             currentPlaylist: [],
             open: false,
@@ -41,7 +41,9 @@ class App extends Component {
 
     retrieveSongs = () => {
         const songs = window.ipcRenderer.sendSync('songs:retrieve')
-        this.setState({ songs })
+        this.setState({ songs }, () => {
+            console.log(songs);
+        })
     }
 
     handleMenuClick = view => {

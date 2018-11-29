@@ -59,6 +59,7 @@
     "electron-is-dev": "0.3.0",
     "electron-nucleus": "^1.10.0",
     "fs-extra": "^7.0.1",
+    "lilli": "file:../lilli",
     "music-metadata": "^3.2.0",
     "pluralize": "^7.0.0",
     "react": "16.4.0",
