@@ -50,6 +50,7 @@ const SONGS = {
             .group(['year', 'album'])
 
         const decades = []
+        years.push(years.shift())
         years.forEach(year => {
             const decadeYear = Math.floor(year.year / 10) * 10
             let index = decades.findIndex(decade => decade.decade === decadeYear)

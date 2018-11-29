@@ -61,7 +61,8 @@ const LOGIC = {
     },
 
     hydrateAlbum(album) {
-        album.artist = album.songs[0].albumartist
+        if (!album.album) album.album = 'Unknown album'
+        album.artist = album.songs[0].albumartist || 'Unknown artist'
         album.genre = album.songs[0].genre
         album.year = album.songs[0].year
         album.cover = album.songs[0].cover

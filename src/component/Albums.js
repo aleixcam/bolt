@@ -24,14 +24,7 @@ class Albums extends Component {
     }
 
     componentWillMount() {
-        window.ipcRenderer.send('songs:groupByAlbums', this.props.songs)
-        window.ipcRenderer.on('songs:groupByAlbums:reply', (event, albums) => {
-            albums.forEach((album, index) => {
-                albums[index] = LOGIC.hydrateAlbum(album)
-            })
-
-            this.setState({ albums })
-        })
+        this.groupAlbums(this.props.songs)
     }
 
     componentDidMount() {
@@ -40,8 +33,23 @@ class Albums extends Component {
         window.addEventListener('resize', this.props.onAlign)
     }
 
+    componentWillReceiveProps(props) {
+        this.groupAlbums(props.songs)
+    }
+
     componentWillUnmount() {
         window.removeEventListener('resize', this.props.onAlign)
+    }
+
+    groupAlbums = songs => {
+        window.ipcRenderer.send('songs:groupByAlbums', songs)
+        window.ipcRenderer.on('songs:groupByAlbums:reply', (event, albums) => {
+            albums.forEach((album, index) => {
+                albums[index] = LOGIC.hydrateAlbum(album)
+            })
+
+            this.setState({ albums })
+        })
     }
 
     render() {
