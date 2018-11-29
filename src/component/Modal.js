@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import ReactModal from 'react-modal'
 import Sidenav from './Sidenav'
 
+ReactModal.setAppElement('#root')
+
 class Modal extends Component {
     constructor(props) {
         super(props)
@@ -43,15 +45,13 @@ class Modal extends Component {
             </section>
 
             <section className="modal-body">
-                <section className="modal-body__section">
-                    <h1 className="modal-body__title">{this.state.section.name}</h1>
-                    {this.state.section.content && this.state.section.content.length > 0 && (
-                        this.state.section.content.map((child, index) => {
-                            const Tag = child.type
-                            return <Tag key={index} {...child.props} />
-                        })
-                    )}
-                </section>
+                <h1 className="modal-body__title">{this.state.section.name}</h1>
+                {this.state.section.content && this.state.section.content.length > 0 && (
+                    this.state.section.content.map((child, index) => {
+                        const Tag = child.type
+                        return <Tag key={index} {...child.props} />
+                    })
+                )}
             </section>
         </ReactModal>
     }

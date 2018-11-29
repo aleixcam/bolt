@@ -722,6 +722,45 @@
     }
 }
 
+.checkbox {
+    position: relative;
+    display: block;
+    padding: 10px 0 10px 3rem;
+    cursor: pointer;
+
+    &__input {
+        display: none;
+
+        &:checked ~ .checkmark {
+            background-color: $color-secondary;
+            border-color: $color-secondary;
+
+            &:before {
+                display: block;
+            }
+        }
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: .75rem;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 18px;
+        width: 18px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 2px solid $color-text;
+
+        &:before {
+            display: none;
+        }
+    }
+}
+
 .selection-area {
     background-color: transparentize($color-primary, .8);
     border: 1px solid transparentize($color-primary, .4);
