@@ -45,7 +45,6 @@ class Modal extends Component {
             </section>
 
             <section className="modal-body">
-                <h1 className="modal-body__title">{this.state.section.name}</h1>
                 {this.state.section.content && this.state.section.content.length > 0 && (
                     this.state.section.content.map((child, index) => {
                         const Tag = child.type

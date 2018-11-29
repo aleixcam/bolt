@@ -620,6 +620,11 @@ input, button, textarea, :focus {
 .modal-body__section {
   margin: 0.25rem 0 1.75rem;
 }
+.modal-body__section--update {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .modal-body__title {
   margin: 0 0 0.5rem;
   font-size: 24px;
@@ -627,7 +632,7 @@ input, button, textarea, :focus {
 }
 .modal-body__text {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
 }
 .modal-body__input {
   width: -webkit-fill-available;
@@ -641,6 +646,26 @@ input, button, textarea, :focus {
   font-size: 14px;
   line-height: 1.75rem;
   font-weight: 600;
+}
+.modal-body__button {
+  height: 2.25rem;
+  border: 0;
+  border-radius: 0.75rem;
+  padding: 0 1.25rem;
+  background-color: #a7b59b;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.75rem;
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+.modal-body__button:hover {
+  background-color: #acb9a1;
+  cursor: pointer;
+}
+.modal-body__button:active {
+  background-color: #b6c2ad;
+  transition: none;
 }
 
 .checkbox {

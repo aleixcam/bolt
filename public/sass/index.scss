@@ -693,6 +693,12 @@
 
         &__section {
             margin: .25rem 0 1.75rem;
+
+            &--update {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
         &__title {
@@ -703,7 +709,7 @@
 
         &__text {
             margin: 0;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         &__input {
@@ -718,6 +724,19 @@
             font-size: 14px;
             line-height: 1.75rem;
             font-weight: 600;
+        }
+
+        &__button {
+            height: 2.25rem;
+            border: 0;
+            border-radius: .75rem;
+            padding: 0 1.25rem;
+            background-color: $color-secondary;
+            color: $color-text;
+            font-size: 16px;
+            line-height: 1.75rem;
+            cursor: pointer;
+            @include fancy-click($color-secondary);
         }
     }
 }
