@@ -64,7 +64,8 @@
     "pluralize": "^7.0.0",
     "react": "16.4.0",
     "react-dom": "16.4.0",
-    "react-modal": "^3.6.1"
+    "react-modal": "^3.6.1",
+    "react-toastify": "^4.4.3"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

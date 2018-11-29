@@ -648,4 +648,21 @@ input, button, textarea, :focus {
   border: 1px solid rgba(112, 225, 0, 0.6);
 }
 
+.Toastify__toast {
+  min-height: unset !important;
+  padding: 1rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+}
+.Toastify__toast--success {
+  background-color: #70e100;
+}
+.Toastify__toast-body {
+  margin: 0 !important;
+  font-weight: 700;
+  font-size: 16px;
+}
+.Toastify__close-button {
+  display: none;
+}
+
 /*# sourceMappingURL=index.css.map */

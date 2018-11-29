@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
+import { ToastContainer, toast } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import Sidenav from './Sidenav'
 import Albums from './Albums'
 import Songs from './Songs'
 import Groups from './Groups'
 import Player from './Player'
-import Parameters from './Parameters'
 import Playlist from './Playlist'
+import Parameters from './Parameters'
 import LOGIC from '../logic'
 import PLAYER from '../logic/player'
 import createSelection from '../logic/selection'
@@ -28,7 +30,10 @@ class App extends Component {
 
     componentWillMount() {
         this.retrieveSongs()
-        window.ipcRenderer.on('scan:end', event => this.retrieveSongs())
+        window.ipcRenderer.on('scan:end', event => {
+            toast.success('Your library has been successfully updated')
+            this.retrieveSongs()
+        })
     }
 
     componentDidMount() {
@@ -41,9 +46,7 @@ class App extends Component {
 
     retrieveSongs = () => {
         const songs = window.ipcRenderer.sendSync('songs:retrieve')
-        this.setState({ songs }, () => {
-            console.log(songs);
-        })
+        this.setState({ songs })
     }
 
     handleMenuClick = view => {
@@ -300,6 +303,8 @@ class App extends Component {
             </aside>
 
             <Parameters />
+
+            <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
         </div>
     }
 }

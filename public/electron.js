@@ -72,7 +72,7 @@ function createMainMenu() {
                 },
                 { type: 'separator' },
                 {
-                    label: 'Scan Library',
+                    label: 'Update Library',
                     click () {
                         mainWindow.webContents.send('scan:start')
                         SCAN.scanLibrary(() => {
