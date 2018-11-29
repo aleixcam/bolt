@@ -691,6 +691,14 @@
         grid-row: 2;
         padding: 1.5rem;
 
+        &__view {
+            display: none;
+
+            &--active {
+                display: block;
+            }
+        }
+
         &__section {
             margin: .25rem 0 1.75rem;
 

@@ -617,6 +617,12 @@ input, button, textarea, :focus {
   grid-row: 2;
   padding: 1.5rem;
 }
+.modal-body__view {
+  display: none;
+}
+.modal-body__view--active {
+  display: block;
+}
 .modal-body__section {
   margin: 0.25rem 0 1.75rem;
 }
