@@ -5,8 +5,13 @@ class Songs extends Component {
     constructor(props){
         super(props)
         this.state = {
+            songs: this.props.songs,
             columns: ['title', 'album', 'artist', 'genre', 'year']
         }
+    }
+
+    componentWillReceiveProps(props) {
+        this.setState({ songs: props.songs })
     }
 
     formatLabel = label => {
@@ -23,8 +28,8 @@ class Songs extends Component {
                 </tr>
             </thead>
             <tbody className="songs-body">
-                {this.props.songs && this.props.songs.length > 0 && (
-                    this.props.songs.map((song, index) => {
+                {this.state.songs && this.state.songs.length > 0 && (
+                    this.state.songs.map((song, index) => {
                         return <tr key={song.id} className={'selectable song '+(index % 2 ? 'song--even' : 'song--odd')} onDoubleClick={() => this.props.onPlay([song])}>
                             <input type="hidden" value={song.id} />
                             {this.state.columns.map(column => {

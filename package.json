@@ -1,6 +1,6 @@
 {
   "name": "bolt",
-  "version": "0.9.0-beta2",
+  "version": "0.9.0-beta3",
   "description": "Audio Player and Library Manager for lovers of music",
   "author": "Aleix Caminal <aleixcam96@gmail.com> (https://github.com/aleixcam/)",
   "license": "MIT",
@@ -16,7 +16,8 @@
     "test": "yarn react-test",
     "build": "yarn react-build",
     "dist": "yarn react-build && electron-builder",
-    "release": "yarn build && npx build --x64 --macos --win --linux -p always",
+    "dist-all": "yarn build && npx build --macos --win --linux",
+    "release": "yarn build && npx build --macos --win -p always",
     "lilli": "lilli"
   },
   "build": {
@@ -58,12 +59,13 @@
     "electron-is-dev": "0.3.0",
     "electron-nucleus": "^1.10.0",
     "fs-extra": "^7.0.1",
-    "lilli": "^0.2.1",
+    "lilli": "file:../lilli",
     "music-metadata": "^3.2.0",
     "pluralize": "^7.0.0",
     "react": "16.4.0",
     "react-dom": "16.4.0",
-    "react-modal": "^3.6.1"
+    "react-modal": "^3.6.1",
+    "react-toastify": "^4.4.3"
   },
   "devDependencies": {
     "concurrently": "3.5.1",

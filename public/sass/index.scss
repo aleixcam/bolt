@@ -495,6 +495,9 @@
                     &__title {
                         margin: 0;
                         text-align: left;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     &.selected {
@@ -722,4 +725,26 @@
 .selection-area {
     background-color: transparentize($color-primary, .8);
     border: 1px solid transparentize($color-primary, .4);
+}
+
+.Toastify {
+    &__toast {
+        min-height: unset !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: .75rem !important;
+
+        &--success {
+            background-color: $color-primary;
+        }
+
+        &-body {
+            margin: 0 !important;
+            font-weight: 700;
+            font-size: 16px;
+        }
+    }
+
+    &__close-button {
+        display: none;
+    }
 }
