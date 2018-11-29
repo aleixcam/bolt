@@ -7,7 +7,9 @@ const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
 const SCAN = require('./js/scan')
+const GitHub = require('./js/github')
 
+const git = new GitHub()
 let preloaderWindow
 let mainWindow;
 
@@ -33,6 +35,11 @@ function createMainWindow() {
 	mainWindow.once('ready-to-show', () => {
         preloaderWindow.hide()
 		mainWindow.show()
+
+        if (PARAMETERS.getByName('autoCheckVersion').value) {
+            git.checkVersion()
+                .then(version => mainWindow.webContents.send('alert:newVerson', version))
+        }
 	})
 }
 
@@ -74,10 +81,10 @@ function createMainMenu() {
                 {
                     label: 'Update Library',
                     click () {
-                        mainWindow.webContents.send('scan:start')
+                        mainWindow.webContents.send('alert:scanStart')
                         SCAN.scanLibrary(() => {
                             Nucleus.track("SCANNED_LIBRARY")
-                            mainWindow.webContents.send('scan:end')
+                            mainWindow.webContents.send('alert:scanEnd')
                         })
                     }
                 },
@@ -173,6 +180,11 @@ app.on('ready', () => {
         Nucleus.track("CHANGED_PARAMETER_"+query.name.toUpperCase())
 		const parameter = PARAMETERS.update(query)
 		event.sender.send('parameters:update:reply', parameter)
+	})
+
+	ipcMain.on('parameters:checkVersion', function(event) {
+        git.checkVersion()
+            .then(version => event.sender.send('parameters:checkVersion:reply', version))
 	})
 
 	ipcMain.on('songs:findAll', function(event) {

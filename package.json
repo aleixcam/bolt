@@ -1,6 +1,6 @@
 {
   "name": "bolt",
-  "version": "0.9.0-beta3",
+  "version": "0.9.0",
   "description": "Audio Player and Library Manager for lovers of music",
   "author": "Aleix Caminal <aleixcam96@gmail.com> (https://github.com/aleixcam/)",
   "license": "MIT",
@@ -61,11 +61,13 @@
     "fs-extra": "^7.0.1",
     "lilli": "file:../lilli",
     "music-metadata": "^3.2.0",
+    "node-fetch": "^2.3.0",
     "pluralize": "^7.0.0",
     "react": "16.4.0",
     "react-dom": "16.4.0",
     "react-modal": "^3.6.1",
-    "react-toastify": "^4.4.3"
+    "react-toastify": "^4.4.3",
+    "url-join": "^4.0.0"
   },
   "devDependencies": {
     "concurrently": "3.5.1",
