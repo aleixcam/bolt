@@ -17,14 +17,12 @@ class Groups extends Component {
         this.setState(LOGIC.setGroupContext(this.props.group), () => {
             window.ipcRenderer.send(`songs:${this.state.renderer}`, this.props.songs)
             window.ipcRenderer.on(`songs:${this.state.renderer}:reply`, (event, groups) => {
-                this.setState({ groups })
+                groups.forEach(group => {
+                    if (!group[this.state.view]) group[this.state.view] = 'Unknown'
+                })
 
-                if (groups.length > 0) {
-                    this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
-                    groups.forEach(group => {
-                        if (!group[this.state.view]) group[this.state.view] = 'Unknown'
-                    })
-                }
+                this.setState({ groups })
+                if (groups.length > 0) this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
             })
         })
     }

@@ -16,7 +16,7 @@ class App extends Component {
         this.state = {
             songs: [],
             selection: createSelection(),
-            view: 'Albums',
+            view: 'Artists',
             currentSong: {},
             currentPlaylist: [],
             open: false,
