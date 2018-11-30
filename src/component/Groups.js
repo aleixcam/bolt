@@ -15,14 +15,23 @@ class Groups extends Component {
 
     componentWillMount() {
         this.setState(LOGIC.setGroupContext(this.props.group), () => {
-            window.ipcRenderer.send(`songs:${this.state.renderer}`, this.props.songs)
-            window.ipcRenderer.on(`songs:${this.state.renderer}:reply`, (event, groups) => {
-                groups.forEach(group => {
-                    if (!group[this.state.view]) group[this.state.view] = 'Unknown'
-                })
+            this.groupGroup(this.props.songs)
+        })
+    }
 
-                this.setState({ groups, group: LOGIC.hydrateGroup(groups[0]) })
+    componentWillReceiveProps(props) {
+        this.groupGroup(props.songs)
+    }
+
+    groupGroup = songs => {
+        window.ipcRenderer.send(`songs:${this.state.renderer}`, songs)
+        window.ipcRenderer.on(`songs:${this.state.renderer}:reply`, (event, groups) => {
+            groups.forEach(group => {
+                if (!group[this.state.view]) group[this.state.view] = 'Unknown'
             })
+
+            this.setState({ groups })
+            if (groups.length > 0) this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
         })
     }
 

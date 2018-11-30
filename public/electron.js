@@ -1,15 +1,15 @@
 require('./frozenenv')
-const path = require("path")
-const { app, BrowserWindow, ipcMain } = require("electron")
-const isDev = require("electron-is-dev")
-
-// const os = require ('os')
-// const username = os.userInfo().username;
+const path = require('path')
+const { app, BrowserWindow, ipcMain, Menu } = require('electron')
+const isDev = require('electron-is-dev')
+const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
 const SCAN = require('./js/scan')
+const GitHub = require('./js/github')
 
+const git = new GitHub()
 let preloaderWindow
 let mainWindow;
 
@@ -25,9 +25,9 @@ function createMainWindow() {
     })
 
 	if (isDev) {
-        mainWindow.loadURL("http://localhost:3000")
+        mainWindow.loadURL('http://localhost:3000')
 	} else {
-        mainWindow.loadURL(`file://${path.join(__dirname, "../build/index.html")}`)
+        mainWindow.loadURL('file://' + path.join(__dirname, '../build/index.html'))
 	}
 
     mainWindow.on("closed", () => (mainWindow = null))
@@ -35,6 +35,11 @@ function createMainWindow() {
 	mainWindow.once('ready-to-show', () => {
         preloaderWindow.hide()
 		mainWindow.show()
+
+        if (PARAMETERS.getByName('autoCheckVersion').value) {
+            git.checkVersion()
+                .then(version => mainWindow.webContents.send('alert:newVerson', version))
+        }
 	})
 }
 
@@ -53,28 +58,114 @@ function createPreloaderWindow() {
 		preloaderWindow.loadURL('file://' + path.join(__dirname, '../build/preloader.html'))
 	}
 
-    preloaderWindow.on("closed", () => (preloaderWindow = null))
+    preloaderWindow.on('closed', () => (preloaderWindow = null))
 
 	preloaderWindow.once('ready-to-show', () => {
 		preloaderWindow.show()
 	})
 }
 
+function createMainMenu() {
+	const template = [
+		{
+			label: 'File',
+			submenu: [
+                { role: 'about' },
+                { type: 'separator' },
+                {
+                    label: 'Preferences',
+                    accelerator: 'CmdOrCtrl+,',
+                    click () { mainWindow.webContents.send('modal:parameters') }
+                },
+                { type: 'separator' },
+                {
+                    label: 'Update Library',
+                    click () {
+                        mainWindow.webContents.send('alert:scanStart')
+                        SCAN.scanLibrary(() => {
+                            Nucleus.track("SCANNED_LIBRARY")
+                            mainWindow.webContents.send('alert:scanEnd')
+                        })
+                    }
+                },
+                { type: 'separator' },
+                { role: 'quit' }
+            ]
+		},
+		{
+			label: 'Edit',
+			submenu: [
+				{ role: 'undo' },
+				{ role: 'redo' },
+				{ type: 'separator' },
+				{ role: 'cut' },
+				{ role: 'copy' },
+				{ role: 'paste' },
+				{ role: 'pasteandmatchstyle' },
+				{ role: 'delete' },
+				{ role: 'selectall' }
+			]
+		},
+		{
+			label: 'View',
+			submenu: [
+				{ role: 'reload' },
+				{ role: 'forcereload' },
+				{ role: 'toggledevtools' },
+				{ type: 'separator' },
+				{ role: 'resetzoom' },
+				{ role: 'zoomin' },
+				{ role: 'zoomout' },
+				{ type: 'separator' },
+				{ role: 'togglefullscreen' }
+			]
+		},
+		{
+			role: 'window',
+			submenu: [
+                { role: 'minimize' },
+                { role: 'close' }
+            ]
+		},
+		{
+			role: 'help',
+			submenu: [
+				{
+                    label: 'Learn More',
+					click() { require('electron').shell.openExternal('https://github.com/aleixcam/bolt') }
+				}
+			]
+		}
+	]
+
+	Menu.setApplicationMenu(Menu.buildFromTemplate(template))
+};
+
 app.on('ready', () => {
+    if (!isDev) PARAMETERS.environmentSetup()
 	createPreloaderWindow()
-    SCAN.scanLibrary(() => createMainWindow())
+
+    SCAN.scanLibrary(() => {
+        createMainWindow()
+        createMainMenu()
+    })
 
 	ipcMain.on('songs:retrieve', function(event) {
 		const songs = SONGS.findAll()
 
 		let pending = songs.length
+        if (!pending) event.returnValue = []
+
 		songs.forEach((song, index) => {
 			SCAN.getMetadata(song.path, (err, data) => {
-				if (err) throw Error(err)
-
-				songs[index].albumartist = data.albumartist
-				songs[index].cover = `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}`
-				songs[index].rating = data.rating[0].rating
+				if (err) {
+                    SONGS.delete(song)
+                } else {
+                    const cover = data.picture ? `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}` : './img/placeholder.png'
+    				songs[index].albumartist = data.albumartist
+    				songs[index].cover = cover
+    				songs[index].rating = data.rating && data.rating[0].rating
+                }
 
 				if (!--pending) event.returnValue = songs
 			})
@@ -86,8 +177,14 @@ app.on('ready', () => {
 	})
 
 	ipcMain.on('parameters:update', function(event, query) {
+        Nucleus.track("CHANGED_PARAMETER_"+query.name.toUpperCase())
 		const parameter = PARAMETERS.update(query)
 		event.sender.send('parameters:update:reply', parameter)
+	})
+
+	ipcMain.on('parameters:checkVersion', function(event) {
+        git.checkVersion()
+            .then(version => event.sender.send('parameters:checkVersion:reply', version))
 	})
 
 	ipcMain.on('songs:findAll', function(event) {
@@ -145,10 +242,10 @@ app.on('ready', () => {
 	})
 })
 
-app.on("window-all-closed", () => {
-    if (process.platform !== "darwin") app.quit()
+app.on('window-all-closed', () => {
+    if (process.platform !== 'darwin') app.quit()
 })
 
-app.on("activate", () => {
+app.on('activate', () => {
     if (mainWindow === null) createMainWindow()
 })

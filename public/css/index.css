@@ -445,6 +445,9 @@ input, button, textarea, :focus {
 .app .album-songs__disk .song__title {
   margin: 0;
   text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .app .album-songs__disk .song.selected {
   background-color: rgba(112, 225, 0, 0.5);
@@ -614,8 +617,19 @@ input, button, textarea, :focus {
   grid-row: 2;
   padding: 1.5rem;
 }
+.modal-body__view {
+  display: none;
+}
+.modal-body__view--active {
+  display: block;
+}
 .modal-body__section {
   margin: 0.25rem 0 1.75rem;
+}
+.modal-body__section--update {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .modal-body__title {
   margin: 0 0 0.5rem;
@@ -624,7 +638,7 @@ input, button, textarea, :focus {
 }
 .modal-body__text {
   margin: 0;
-  font-size: 14px;
+  font-size: 16px;
 }
 .modal-body__input {
   width: -webkit-fill-available;
@@ -639,10 +653,81 @@ input, button, textarea, :focus {
   line-height: 1.75rem;
   font-weight: 600;
 }
+.modal-body__button {
+  height: 2.25rem;
+  border: 0;
+  border-radius: 0.75rem;
+  padding: 0 1.25rem;
+  background-color: #a7b59b;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 1.75rem;
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+.modal-body__button:hover {
+  background-color: #acb9a1;
+  cursor: pointer;
+}
+.modal-body__button:active {
+  background-color: #b6c2ad;
+  transition: none;
+}
+
+.checkbox {
+  position: relative;
+  display: block;
+  padding: 10px 0 10px 3rem;
+  cursor: pointer;
+}
+.checkbox__input {
+  display: none;
+}
+.checkbox__input:checked ~ .checkmark {
+  background-color: #a7b59b;
+  border-color: #a7b59b;
+}
+.checkbox__input:checked ~ .checkmark:before {
+  display: block;
+}
+.checkbox .checkmark {
+  position: absolute;
+  top: 50%;
+  left: 0.75rem;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 18px;
+  width: 18px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 2px solid #ffffff;
+}
+.checkbox .checkmark:before {
+  display: none;
+}
 
 .selection-area {
   background-color: rgba(112, 225, 0, 0.2);
   border: 1px solid rgba(112, 225, 0, 0.6);
+}
+
+.Toastify__toast {
+  min-height: unset !important;
+  padding: 1rem 1.5rem !important;
+  border-radius: 0.75rem !important;
+}
+.Toastify__toast--success {
+  background-color: #70e100 !important;
+}
+.Toastify__toast-body {
+  margin: 0 !important;
+  font-weight: 700;
+  font-size: 16px;
+}
+.Toastify__close-button {
+  display: none;
 }
 
 /*# sourceMappingURL=index.css.map */

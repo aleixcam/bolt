@@ -1,0 +1,174 @@
+body {
+  margin: 0;
+  color: #ffffff;
+  font-family: Whitney, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  user-select: none;
+  overflow: hidden;
+}
+
+input, button, textarea, :focus {
+  outline: none;
+}
+
+::-webkit-scrollbar {
+  background-color: transparent;
+  width: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb:window-inactive,
+::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.5);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.landing {
+  background-color: #2e332d;
+  user-select: auto;
+  overflow: auto;
+}
+.landing .navbar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 5rem;
+  height: calc(80px * .75);
+  background-color: #181b17;
+  z-index: 1000;
+}
+.landing .navbar__title {
+  margin: 0;
+  color: #a7b59b;
+  text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 22px;
+}
+.landing .navbar__logo {
+  height: 40px;
+  margin-right: 5px;
+}
+.landing .header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 1rem 2rem;
+  max-height: 100vh;
+  background-color: #1d201c;
+  overflow: hidden;
+}
+.landing .header-case {
+  margin: 3rem 0 2rem;
+}
+.landing .header-download {
+  margin-top: 1.5rem;
+}
+.landing .header-download-links {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 1rem;
+}
+.landing .header__title {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  font-size: 64px;
+  color: #70e100;
+  font-weight: 900;
+  letter-spacing: 12px;
+  text-transform: uppercase;
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  text-shadow: 0px 0px 20px #000;
+}
+.landing .header__text {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+.landing .header__button {
+  display: inline-grid;
+  padding: 0.5rem 1.75rem;
+  border-radius: 0.75rem;
+  background-color: #a7b59b;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.1s linear;
+}
+.landing .header__button:hover {
+  background-color: #9fae92;
+  cursor: pointer;
+}
+.landing .header__button:active {
+  background-color: #95a686;
+  transition: none;
+}
+.landing .header__button--text {
+  font-size: 20px;
+}
+.landing .header__button--small {
+  margin: 0;
+  padding: 0;
+  color: #2e332d;
+  font-size: 14px;
+}
+.landing .header__link {
+  color: #a7b59b;
+  text-decoration: none;
+}
+.landing .header__link:hover {
+  text-decoration: underline;
+}
+.landing .main {
+  position: relative;
+  box-shadow: 0px 0px 20px 5px rgba(0, 0, 0, 0.75);
+}
+.landing .showcase {
+  display: grid;
+  grid-template-columns: repeat(2, 50%);
+}
+.landing .showcase--odd {
+  background-color: #353b34;
+}
+.landing .showcase__show {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+.landing .showcase__image {
+  position: relative;
+  width: 100%;
+  border-radius: 1rem;
+  box-shadow: 0px 0px 25px 0px #70e100;
+}
+.landing .showcase__case {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+}
+.landing .showcase__title {
+  margin: 0;
+  margin-bottom: 0.5rem;
+  padding: 0 1rem;
+  color: #a7b59b;
+  font-size: 48px;
+  font-weight: 400;
+}
+.landing .showcase__text {
+  margin: 0;
+}
+.landing .footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+  padding: 2rem;
+}
+
+/*# sourceMappingURL=index.css.map */

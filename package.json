@@ -1,6 +1,6 @@
 {
   "name": "bolt",
-  "version": "0.8.1",
+  "version": "0.9.0",
   "description": "Audio Player and Library Manager for lovers of music",
   "author": "Aleix Caminal <aleixcam96@gmail.com> (https://github.com/aleixcam/)",
   "license": "MIT",
@@ -12,11 +12,12 @@
     "react-build": "react-scripts build",
     "react-test": "react-scripts test --env=jsdom",
     "react-eject": "react-scripts eject",
-    "electron-build": "electron-builder",
     "start": "concurrently \"cross-env BROWSER=none yarn react-start\" \"wait-on http://localhost:3000 && electron .\"",
-    "build": "yarn react-build && yarn electron-build",
-    "dist": "yarn react-build && electron-builder --publish=always",
     "test": "yarn react-test",
+    "build": "yarn react-build",
+    "dist": "yarn react-build && electron-builder",
+    "dist-all": "yarn build && npx build --macos --win --linux",
+    "release": "yarn build && npx build --macos --win -p always",
     "lilli": "lilli"
   },
   "build": {
@@ -30,17 +31,17 @@
     "mac": {
       "icon": "assets/bolt.icns",
       "type": "distribution",
+      "category": "public.app-category.music",
       "publish": {
-        "provider": "s3",
-        "bucket": "s3.bolt.com"
-      },
-      "category": "public.app-category.music"
+        "provider": "github",
+        "owner": "aleixcam"
+      }
     },
     "win": {
       "icon": "assets/bolt.ico",
       "publish": {
-        "provider": "s3",
-        "bucket": "s3.bolt.com"
+        "provider": "github",
+        "owner": "aleixcam"
       }
     },
     "linux": {
@@ -48,26 +49,30 @@
       "description": "Audio Player and Library Manager for lovers of music",
       "category": "Audio;Player",
       "publish": {
-        "provider": "s3",
-        "bucket": "s3.bolt.com"
+        "provider": "github",
+        "owner": "aleixcam"
       }
     }
   },
   "dependencies": {
     "cross-env": "5.1.6",
     "electron-is-dev": "0.3.0",
+    "electron-nucleus": "^1.10.0",
     "fs-extra": "^7.0.1",
-    "lilli": "^0.2.2",
+    "lilli": "file:../lilli",
     "music-metadata": "^3.2.0",
+    "node-fetch": "^2.3.0",
     "pluralize": "^7.0.0",
     "react": "16.4.0",
     "react-dom": "16.4.0",
-    "react-modal": "^3.6.1"
+    "react-modal": "^3.6.1",
+    "react-toastify": "^4.4.3",
+    "url-join": "^4.0.0"
   },
   "devDependencies": {
     "concurrently": "3.5.1",
     "electron": "^3.0.10",
-    "electron-builder": "^20.15.1",
+    "electron-builder": "^20.38.0",
     "react-scripts": "^2.1.1",
     "wait-on": "2.1.0"
   },

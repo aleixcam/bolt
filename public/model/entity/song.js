@@ -1,3 +1,4 @@
+const path = require('path')
 const { Entity } = require('lilli')
 
 class Song extends Entity {
@@ -5,7 +6,8 @@ class Song extends Entity {
         super(query)
 
         this.id = query.id || Date.now()
-        this.title = query.title || null
+        this.path = query.path
+        this.title = query.title || path.basename(query.path).replace(/\.[^/.]+$/, '')
         this.album = query.album || null
         this.artist = query.artist || null
         this.genre = query.genre || null

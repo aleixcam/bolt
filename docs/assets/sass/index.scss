@@ -1,0 +1,181 @@
+@import '../../../public/sass/common';
+
+@mixin fancy-click($color) {
+    transition: all .1s linear;
+
+    &:hover {
+        background-color: darken($color, 3%);
+        cursor: pointer;
+    }
+
+    &:active {
+        background-color: darken($color, 7%);
+        transition: none;
+    }
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.landing {
+    background-color: $color-background;
+    user-select: auto;
+    overflow: auto;
+
+    .navbar {
+        position: sticky;
+        top: 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5rem;
+        height: calc(#{$header-height} * .75);
+        background-color: darken($color-background, 9%);
+        z-index: 1000;
+
+        &__title {
+            margin: 0;
+            color: $color-secondary;
+            text-transform: uppercase;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 22px;
+        }
+
+        &__logo {
+            height: 40px;
+            margin-right: 5px;
+        }
+    }
+
+    .header {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 1rem 2rem;
+        max-height: 100vh;
+        background-color: darken($color-background, 7%);
+        overflow: hidden;
+
+        &-case {
+            margin: 3rem 0 2rem;
+        }
+
+        &-download {
+            margin-top: 1.5rem;
+
+            &-links {
+                display: flex;
+                justify-content: space-around;
+                margin-top: 1rem;
+            }
+        }
+
+        &__title {
+            margin: 0;
+            margin-bottom: .5rem;
+            font-size: 64px;
+            color: $color-primary;
+            font-weight: 900;
+            letter-spacing: 12px;
+            text-transform: uppercase;
+            font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+            text-shadow: 0px 0px 20px #000;
+        }
+
+        &__text {
+            margin: 0;
+            font-size: 20px;
+            font-weight: 400;
+        }
+
+        &__button {
+            display: inline-grid;
+            padding: .5rem 1.75rem;
+            border-radius: .75rem;
+            background-color: $color-secondary;
+            color: #fff;
+            text-decoration: none;
+            @include fancy-click($color-secondary);
+
+            &--text {
+                font-size: 20px;
+            }
+
+            &--small {
+                margin: 0;
+                padding: 0;
+                color: $color-background;
+                font-size: 14px;
+            }
+        }
+
+        &__link {
+            color: $color-secondary;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+
+    .main {
+        position: relative;
+        box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.75);
+    }
+
+    .showcase {
+        display: grid;
+        grid-template-columns: repeat(2, 50%);
+
+        &--odd {
+            background-color: lighten($color-background, 3%);
+        }
+
+        &__show {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem;
+        }
+
+        &__image {
+            position: relative;
+            width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0px 0px 25px 0px $color-primary;
+        }
+
+        &__case {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 2rem;
+        }
+
+        &__title {
+            margin: 0;
+            margin-bottom: .5rem;
+            padding: 0 1rem;
+            color: $color-secondary;
+            font-size: 48px;
+            font-weight: 400;
+        }
+
+        &__text {
+            margin: 0;
+        }
+    }
+
+    .footer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-size: 12px;
+        padding: 2rem;
+    }
+}
