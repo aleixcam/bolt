@@ -9,18 +9,8 @@ GitHub.latestRelease(platform, (link, version) => {
 
     const buttonText = document.createElement('small')
     buttonText.className = 'header__button--text'
-    switch (platform) {
-        case 'linux':
-            buttonText.innerText = 'Download for Linux'
-            break
-        case 'win32':
-            buttonText.innerText = 'Download for Windows'
-            break
-        case 'darwin':
-        default:
-            buttonText.innerText = 'Download for Mac'
-            break
-    }
+    if (platform === 'win32') buttonText.innerText = 'Download for Windows'
+    else buttonText.innerText = 'Download for Mac'
     downloadButton.appendChild(buttonText)
 
     const versionTag = document.createElement('small')
