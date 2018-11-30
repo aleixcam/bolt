@@ -384,10 +384,16 @@
 
             &__link {
                 padding: 0 1.5rem;
-                max-height: 3rem;
+                line-height: 2.5rem;
+                margin: .25rem;
                 white-space: nowrap;
                 text-overflow: ellipsis;
                 overflow: hidden;
+                border-radius: .75rem;
+
+                &--active {
+                    background-color: darken($color-background, 3%);
+                }
             }
         }
 
@@ -557,13 +563,13 @@
             text-align: center;
         }
 
-        &--active {
-            background-color: $color-secondary !important;
-        }
-
         &:hover {
             background-color: lighten($color-background, 3%);
             cursor: pointer;
+        }
+
+        &--active, &--active:hover {
+            background-color: $color-secondary;
         }
     }
 }
@@ -613,8 +619,8 @@
             &:before {
                 content: '•';
                 position: absolute;
-                top: -6px;
-                left: -12px;
+                top: -5px;
+                left: -13px;
                 font-size: 26px;
             }
         }
@@ -812,5 +818,34 @@
 
     &__close-button {
         display: none;
+    }
+}
+
+.react-contextmenu {
+    padding: .25rem;
+    background-color: darken($color-background, 3%);
+    border: 1px solid darken($color-background, 7%);
+    z-index: 1000;
+
+    &-item {
+        padding: .5rem 1rem;
+        font-weight: 400;
+        font-size: 16px;
+        border-radius: .75rem;
+
+        &--divider {
+            margin: .25rem -.25rem;
+            padding: 0;
+            border-top: 1px solid darken($color-background, 7%);
+        }
+
+        &:hover {
+            background-color: $color-background;
+            cursor: pointer;
+        }
+
+        & + .react-contextmenu-item {
+            margin-top: .25rem;
+        }
     }
 }

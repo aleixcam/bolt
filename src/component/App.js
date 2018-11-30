@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ContextMenu, MenuItem } from "react-contextmenu";
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Sidenav from './Sidenav'
@@ -312,6 +313,13 @@ class App extends Component {
             <Parameters version={this.state.version} />
 
             <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
+
+            <ContextMenu id="song">
+                <MenuItem>Play next</MenuItem>
+                <MenuItem>Play later</MenuItem>
+                <MenuItem divider />
+                <MenuItem>Delete from library</MenuItem>
+            </ContextMenu>
         </div>
     }
 }
