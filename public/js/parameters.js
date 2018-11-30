@@ -22,7 +22,7 @@ const PARAMETERS = {
         if (!this.getByName('acceptedExtensions')) {
             this.addParameter({
                 name: 'acceptedExtensions',
-                value: [".mp3"]
+                value: ['.mp3']
             })
         }
 
