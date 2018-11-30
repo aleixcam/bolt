@@ -34,7 +34,7 @@ class App extends Component {
         this.retrieveSongs()
         window.ipcRenderer.on('alert:newVerson', (event, version) => {
             this.setState({ version }, () => {
-                toast.success(`A more recent version of Bolt has been released (${this.state.version})`)
+                if (version) toast.success(`A more recent version of Bolt has been released (${this.state.version})`)
             })
         })
 
