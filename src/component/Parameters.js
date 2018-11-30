@@ -30,10 +30,7 @@ class Parameters extends Component {
     }
 
     handleMenuClick = view => {
-        console.log(this.state.view);
-        this.setState({ view }, () => {
-            console.log(this.state.view);
-        })
+        this.setState({ view })
     }
 
     closeModal = () => {
@@ -72,12 +69,9 @@ class Parameters extends Component {
     }
 
     handleSearchVersion = () => {
-        console.log('button');
         window.ipcRenderer.send('parameters:checkVersion')
         window.ipcRenderer.on('parameters:checkVersion:reply', (event, version) => {
-            this.setState({ version }, () => {
-                console.log(version);
-            })
+            this.setState({ version })
         })
     }
 

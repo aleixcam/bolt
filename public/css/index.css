@@ -351,10 +351,15 @@ input, button, textarea, :focus {
 }
 .app .groups .sidenav__link {
   padding: 0 1.5rem;
-  max-height: 3rem;
+  line-height: 2.5rem;
+  margin: 0.25rem;
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  border-radius: 0.75rem;
+}
+.app .groups .sidenav__link--active {
+  background-color: #272b26;
 }
 .app .groups-body {
   display: grid;
@@ -493,12 +498,12 @@ input, button, textarea, :focus {
   transform: translateY(-50%);
   text-align: center;
 }
-.sidenav__link--active {
-  background-color: #a7b59b !important;
-}
 .sidenav__link:hover {
   background-color: #353b34;
   cursor: pointer;
+}
+.sidenav__link--active, .sidenav__link--active:hover {
+  background-color: #a7b59b;
 }
 
 .header {
@@ -542,8 +547,8 @@ input, button, textarea, :focus {
 .header__small + .header__small:before {
   content: "•";
   position: absolute;
-  top: -6px;
-  left: -12px;
+  top: -5px;
+  left: -13px;
   font-size: 26px;
 }
 .header__button {
@@ -728,6 +733,31 @@ input, button, textarea, :focus {
 }
 .Toastify__close-button {
   display: none;
+}
+
+.react-contextmenu {
+  padding: 0.25rem;
+  background-color: #272b26;
+  border: 1px solid #1d201c;
+  z-index: 1000;
+}
+.react-contextmenu-item {
+  padding: 0.5rem 1rem;
+  font-weight: 400;
+  font-size: 16px;
+  border-radius: 0.75rem;
+}
+.react-contextmenu-item--divider {
+  margin: 0.25rem -0.25rem;
+  padding: 0;
+  border-top: 1px solid #1d201c;
+}
+.react-contextmenu-item:hover {
+  background-color: #2e332d;
+  cursor: pointer;
+}
+.react-contextmenu-item + .react-contextmenu-item {
+  margin-top: 0.25rem;
 }
 
 /*# sourceMappingURL=index.css.map */

@@ -35,7 +35,7 @@ class GitHub {
 
     checkVersion(callback) {
         return this.latestRelease()
-            .then(release => app.getVersion() === release.name ? false : release.name)
+            .then(release => app.getVersion() === release.name ? false : release.tag_name)
     }
 }
 

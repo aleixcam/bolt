@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { ContextMenuTrigger } from "react-contextmenu";
 import LOGIC from '../logic'
 
 class Songs extends Component {
