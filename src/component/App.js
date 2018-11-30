@@ -20,7 +20,7 @@ class App extends Component {
             version: false,
             songs: [],
             selection: createSelection(),
-            view: 'Albums',
+            view: 'Artists',
             currentSong: {},
             currentPlaylist: [],
             open: false,

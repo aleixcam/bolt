@@ -604,13 +604,17 @@
         white-space: nowrap;
         text-overflow: ellipsis;
         overflow: hidden;
+
+        &:only-child {
+            margin-top: 1rem;
+        }
     }
 
     &__small {
         position: relative;
-        margin: 0;
         color: $color-secondary;
-        font-size: 16px;
+        line-height: 1rem;
+        font-size: 15px;
         font-weight: 700;
 
         & + .header__small {
@@ -619,7 +623,7 @@
             &:before {
                 content: '•';
                 position: absolute;
-                top: -5px;
+                top: 2px;
                 left: -13px;
                 font-size: 26px;
             }

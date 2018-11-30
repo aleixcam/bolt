@@ -534,11 +534,14 @@ input, button, textarea, :focus {
   text-overflow: ellipsis;
   overflow: hidden;
 }
+.header__title:only-child {
+  margin-top: 1rem;
+}
 .header__small {
   position: relative;
-  margin: 0;
   color: #a7b59b;
-  font-size: 16px;
+  line-height: 1rem;
+  font-size: 15px;
   font-weight: 700;
 }
 .header__small + .header__small {
@@ -547,7 +550,7 @@ input, button, textarea, :focus {
 .header__small + .header__small:before {
   content: "•";
   position: absolute;
-  top: -5px;
+  top: 2px;
   left: -13px;
   font-size: 26px;
 }
