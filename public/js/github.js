@@ -1,15 +1,18 @@
-const path = require('path');
+const fetch = require('node-fetch')
+const urljoin = require('url-join')
+const { app } = require('electron')
+const PARAMETERS = require('./parameters')
 
 class GitHub {
-    constructor() {
+    constructor(owner, repo) {
         this.rootUrl = 'https://api.github.com/repos'
-        this.owner = 'aleixcam'
-        this.repo = 'bolt'
+        this.owner = owner || 'aleixcam'
+        this.repo = repo || 'bolt'
         this.api = 'releases'
     }
 
     releases() {
-        return fetch(path.join(this.rootUrl, this.owner, this.repo, this.api), {
+        return fetch(urljoin(this.rootUrl, this.owner, this.repo, this.api), {
             method: 'GET'
         }).then(result => {
             return result.json()
@@ -24,32 +27,15 @@ class GitHub {
         })
     }
 
-    getDownloadLink(release, platform) {
-        let name
-        switch (platform) {
-            case 'linux':
-                name = `bolt-${release.name}-x86_64.AppImage`
-                break
-            case 'win32':
-                name = `bolt-setup-${release.name}.exe`
-                break
-            case 'darwin':
-            default:
-                name = `Bolt-${release.name}-mac.zip`
-                break
-        }
-
-        const asset = release.assets.find(asset => asset.name === name)
-        return asset.browser_download_url
+    latestRelease() {
+        const beta = PARAMETERS.getByName('betaVersions').value
+        return this.releases()
+            .then(releases => releases.find(release => (beta ? true : !release.prerelease) && !release.draft))
     }
 
-    latestRelease(platform, callback) {
-        return this.releases()
-            .then(releases => {
-                const release = releases.find(release => !release.prerelease && !release.draft)
-                const link = this.getDownloadLink(release, platform)
-                return callback(link, release.tag_name)
-            })
+    checkVersion(callback) {
+        return this.latestRelease()
+            .then(release => app.getVersion() === release.name ? false : release.name)
     }
 }
 

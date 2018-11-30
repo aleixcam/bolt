@@ -34,7 +34,11 @@ const SCAN = {
             this.getMetadata(src, (err, data) => {
                 if (err) return callback(err.message)
 
-                const dst = path.join(dir, data.artist, data.album, data.title + path.extname(src))
+                const artist = data.artist || 'Unknown artist'
+                const album = data.album || 'Unknown album'
+                const title = data.title ? data.title + path.extname(src) : path.basename(src)
+
+                const dst = path.join(dir, artist, album, title)
                 fs.move(src, dst, { overwrite: true }, err => {
                     if (err) return callback(err.message)
 
@@ -57,7 +61,7 @@ const SCAN = {
 
     scanLibrary(callback) {
         const libraryDirectory = PARAMETERS.getByName('libraryDirectory').value
-    	const boltDirectory = libraryDirectory + 'Bolt/'
+    	const boltDirectory = path.join(libraryDirectory, 'Bolt')
     	const extensions = PARAMETERS.getByName('acceptedExtensions').value
 
         fs.ensureDirSync(boltDirectory)
@@ -75,7 +79,7 @@ const SCAN = {
                     title: song.title,
                     album: song.album,
                     artist: song.artist,
-                    genre: song.genre[0],
+                    genre: song.genre && song.genre[0],
                     year: song.year,
                     track: song.track.no,
                     disk: song.disk.no

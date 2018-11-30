@@ -20,6 +20,10 @@ input, button, textarea, :focus {
   background: rgba(0, 0, 0, 0.5);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 .landing {
   background-color: #2e332d;
   user-select: auto;
@@ -40,6 +44,9 @@ input, button, textarea, :focus {
   margin: 0;
   color: #a7b59b;
   text-transform: uppercase;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 22px;
 }
 .landing .navbar__logo {
   height: 40px;
@@ -64,17 +71,18 @@ input, button, textarea, :focus {
 .landing .header-download-links {
   display: flex;
   justify-content: space-around;
-  margin-top: 1.5rem;
+  margin-top: 1rem;
 }
 .landing .header__title {
   margin: 0;
   margin-bottom: 0.5rem;
   font-size: 64px;
-  font-weight: 400;
   color: #70e100;
   font-weight: 900;
   letter-spacing: 12px;
   text-transform: uppercase;
+  font-family: "Arial Rounded MT Bold", "Helvetica Rounded", Arial, sans-serif;
+  text-shadow: 0px 0px 20px #000;
 }
 .landing .header__text {
   margin: 0;
@@ -82,11 +90,11 @@ input, button, textarea, :focus {
   font-weight: 400;
 }
 .landing .header__button {
+  display: inline-grid;
   padding: 0.5rem 1.75rem;
   border-radius: 0.75rem;
   background-color: #a7b59b;
   color: #fff;
-  font-size: 20px;
   text-decoration: none;
   transition: all 0.1s linear;
 }
@@ -97,6 +105,15 @@ input, button, textarea, :focus {
 .landing .header__button:active {
   background-color: #95a686;
   transition: none;
+}
+.landing .header__button--text {
+  font-size: 20px;
+}
+.landing .header__button--small {
+  margin: 0;
+  padding: 0;
+  color: #2e332d;
+  font-size: 14px;
 }
 .landing .header__link {
   color: #a7b59b;

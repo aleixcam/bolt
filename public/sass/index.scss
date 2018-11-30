@@ -495,6 +495,9 @@
                     &__title {
                         margin: 0;
                         text-align: left;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
 
                     &.selected {
@@ -688,8 +691,22 @@
         grid-row: 2;
         padding: 1.5rem;
 
+        &__view {
+            display: none;
+
+            &--active {
+                display: block;
+            }
+        }
+
         &__section {
             margin: .25rem 0 1.75rem;
+
+            &--update {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
         }
 
         &__title {
@@ -700,7 +717,7 @@
 
         &__text {
             margin: 0;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         &__input {
@@ -716,10 +733,84 @@
             line-height: 1.75rem;
             font-weight: 600;
         }
+
+        &__button {
+            height: 2.25rem;
+            border: 0;
+            border-radius: .75rem;
+            padding: 0 1.25rem;
+            background-color: $color-secondary;
+            color: $color-text;
+            font-size: 16px;
+            line-height: 1.75rem;
+            cursor: pointer;
+            @include fancy-click($color-secondary);
+        }
+    }
+}
+
+.checkbox {
+    position: relative;
+    display: block;
+    padding: 10px 0 10px 3rem;
+    cursor: pointer;
+
+    &__input {
+        display: none;
+
+        &:checked ~ .checkmark {
+            background-color: $color-secondary;
+            border-color: $color-secondary;
+
+            &:before {
+                display: block;
+            }
+        }
+    }
+
+    .checkmark {
+        position: absolute;
+        top: 50%;
+        left: .75rem;
+        transform: translateY(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 18px;
+        width: 18px;
+        font-size: 14px;
+        border-radius: 5px;
+        border: 2px solid $color-text;
+
+        &:before {
+            display: none;
+        }
     }
 }
 
 .selection-area {
     background-color: transparentize($color-primary, .8);
     border: 1px solid transparentize($color-primary, .4);
+}
+
+.Toastify {
+    &__toast {
+        min-height: unset !important;
+        padding: 1rem 1.5rem !important;
+        border-radius: .75rem !important;
+
+        &--success {
+            background-color: $color-primary !important;
+        }
+
+        &-body {
+            margin: 0 !important;
+            font-weight: 700;
+            font-size: 16px;
+        }
+    }
+
+    &__close-button {
+        display: none;
+    }
 }
