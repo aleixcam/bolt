@@ -13,7 +13,7 @@ const LOGIC = {
     },
 
     secondsToTime(time) {
-        if (!time || typeof time !== 'number') throw Error(`Invalid argument ${time}`)
+        if (typeof time !== 'number') throw Error(`Invalid argument ${time}`)
 
         const minutes = Math.floor(time / 60);
         const seconds = ('0' + Math.floor(time - minutes * 60)).slice(-2);
@@ -61,7 +61,8 @@ const LOGIC = {
     },
 
     hydrateAlbum(album) {
-        album.artist = album.songs[0].albumartist
+        if (!album.album) album.album = 'Unknown album'
+        album.artist = album.songs[0].albumartist || 'Unknown artist'
         album.genre = album.songs[0].genre
         album.year = album.songs[0].year
         album.cover = album.songs[0].cover
