@@ -31,7 +31,7 @@ class Songs extends Component {
                 {this.state.songs && this.state.songs.length > 0 && (
                     this.state.songs.map((song, index) => {
                         return <tr key={song.id} className={'selectable song '+(index % 2 ? 'song--even' : 'song--odd')} onDoubleClick={() => this.props.onPlay([song])}>
-                            <input type="hidden" value={song.id} />
+                            <td style={{ display: 'none' }}><input type="hidden" value={song.id} /></td>
                             {this.state.columns.map(column => {
                                 return <td key={column} className={"song__cell song__cell--"+column}>{song[column]}</td>
                             })}
