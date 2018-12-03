@@ -1,10 +1,11 @@
 const path = require('path')
 const fs = require('fs-extra')
 const { app } = require('electron')
-const PARAMETERS = require('./js/parameters')
+const PARAMETERS = require('./parameters')
 
 const SETUP = {
     environmentSetup() {
+        console.log(process.env.LILLI_DATA_DIRECTORY);
         fs.ensureDirSync(process.env.LILLI_DATA_DIRECTORY)
 
         const songsPath = path.join(process.env.LILLI_DATA_DIRECTORY, 'songs.json')
@@ -32,4 +33,4 @@ const SETUP = {
     }
 }
 
-module.exports = PARAMETERS
+module.exports = SETUP
