@@ -106,20 +106,9 @@ class App extends Component {
         }
     }
 
-
-    /******************************************************************************************/
-    /**** PLAYER ******************************************************************************/
-    /******************************************************************************************/
-
-    setPlayerReference = ref => {
-        this.audioPlayer = ref
-    }
-
-    handlePlay = (songs, shuffle = false) => {
+    handleSelection = songs => {
         const selection = this.state.selection.getSelection()
         if (selection.length > 0) {
-            window.Nucleus.track("PLAYED_SELECTED_SONGS")
-
             selection.forEach(selected => {
                 Array.from(selected.children).forEach(child => {
                     if (child.nodeName === 'INPUT' && child.type === 'hidden') {
@@ -130,13 +119,27 @@ class App extends Component {
                     }
                 })
             })
-        } else {
-            window.Nucleus.track("PLAYED_SONGS")
         }
 
+        return songs
+    }
+
+
+    /******************************************************************************************/
+    /**** PLAYER ******************************************************************************/
+    /******************************************************************************************/
+
+    setPlayerReference = ref => {
+        this.audioPlayer = ref
+    }
+
+    handlePlay = (songs, shuffle = false) => {
+        songs = this.handleSelection(songs)
         shuffle = this.state.shuffle || shuffle
+
         PLAYER.play(songs, shuffle, song => {
             this.setState({ playing: true, currentSong: song, currentPlaylist: songs, shuffle }, () => {
+                window.Nucleus.track("PLAYED_SONGS")
                 this.audioPlayer.current.currentTime = 0
                 this.audioPlayer.current.play()
             })
@@ -245,6 +248,31 @@ class App extends Component {
             })
     }
 
+
+    /******************************************************************************************/
+    /**** CONTEXT MENU ************************************************************************/
+    /******************************************************************************************/
+
+    handlePlayNext = () => {
+        const songs = this.handleSelection([])
+        console.log(songs)
+    }
+
+    handleAddSongsToPlaylist = () => {
+        const songs = this.handleSelection([])
+        console.log(songs)
+    }
+
+    handleDeleteSongs = () => {
+        const songs = this.handleSelection([])
+        console.log(songs)
+    }
+
+
+    /******************************************************************************************/
+    /**** RENDER ******************************************************************************/
+    /******************************************************************************************/
+
     render() {
         return <div className={this.state.open ? "app open" : "app"}>
 
@@ -312,10 +340,10 @@ class App extends Component {
             </aside>
 
             <Menu id="song">
-                <Item>Play next</Item>
-                <Item>Add to current playlist</Item>
+                <Item onClick={this.handlePlayNext}>Play next</Item>
+                <Item onClick={this.handleAddSongsToPlaylist}>Add to current playlist</Item>
                 <Separator/>
-                <Item>Delete from library</Item>
+                <Item onClick={this.handleDeleteSongs}>Delete from library</Item>
             </Menu>
 
             <Parameters version={this.state.version} />
