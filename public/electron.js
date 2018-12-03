@@ -81,13 +81,7 @@ function createMainMenu() {
                 { type: 'separator' },
                 {
                     label: 'Update Library',
-                    click () {
-                        mainWindow.webContents.send('alert:scanStart')
-                        SCAN.scanLibrary(() => {
-                            Nucleus.track("SCANNED_LIBRARY")
-                            mainWindow.webContents.send('alert:scanEnd')
-                        })
-                    }
+                    click () { updateLibrary() }
                 },
                 { type: 'separator' },
                 { role: 'quit' }
@@ -140,7 +134,16 @@ function createMainMenu() {
 	]
 
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template))
-};
+}
+
+function updateLibrary() {
+    const alert = PARAMETERS.getByName('autoCheckVersion').value
+    mainWindow.webContents.send('alert:scanStart', alert)
+    SCAN.scanLibrary(() => {
+        Nucleus.track("SCANNED_LIBRARY")
+        mainWindow.webContents.send('alert:scanEnd', alert)
+    })
+}
 
 app.on('ready', () => {
 	createPreloaderWindow()
