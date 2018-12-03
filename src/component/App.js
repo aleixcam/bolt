@@ -38,9 +38,9 @@ class App extends Component {
             })
         })
 
-        window.ipcRenderer.on('alert:scanEnd', event => {
-            toast.success('Your library has been successfully updated')
+        window.ipcRenderer.on('alert:scanEnd', (event, alert) => {
             this.retrieveSongs()
+            if (alert) toast.success('Your library has been successfully updated')
         })
     }
 
