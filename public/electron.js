@@ -137,7 +137,7 @@ function createMainMenu() {
 }
 
 function updateLibrary() {
-    const alert = PARAMETERS.getByName('autoCheckVersion').value
+    const alert = PARAMETERS.getByName('scanAlert').value
     mainWindow.webContents.send('alert:scanStart', alert)
     SCAN.scanLibrary(() => {
         Nucleus.track("SCANNED_LIBRARY")
