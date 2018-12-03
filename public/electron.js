@@ -4,6 +4,7 @@ const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
 const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
+const SETUP = require('./js/setup')
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
 const SCAN = require('./js/scan')
@@ -142,8 +143,8 @@ function createMainMenu() {
 };
 
 app.on('ready', () => {
-    if (!isDev) PARAMETERS.environmentSetup()
 	createPreloaderWindow()
+    SETUP.environmentSetup()
 
     SCAN.scanLibrary(() => {
         createMainWindow()
