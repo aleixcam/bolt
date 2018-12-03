@@ -26,13 +26,14 @@ class Groups extends Component {
     groupGroup = songs => {
         window.ipcRenderer.send(`songs:${this.state.renderer}`, songs)
         window.ipcRenderer.on(`songs:${this.state.renderer}:reply`, (event, groups) => {
-            groups.forEach(group => {
+            let current = 0
+            groups.forEach((group, index) => {
                 if (!group[this.state.view]) group[this.state.view] = 'Unknown'
+                if (group[this.state.view] === this.state.group[this.state.view]) current = index
             })
 
-            this.setState({ groups })
-            if (groups.length > 0 && Object.keys(this.state.group).length <= 0) {
-                this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
+            if (groups.length > 0) {
+                this.setState({ groups, group: LOGIC.hydrateGroup(groups[current]) })
             }
         })
     }

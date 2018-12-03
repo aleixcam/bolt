@@ -266,7 +266,9 @@ class App extends Component {
 
     handleDeleteSongs = () => {
         const songs = this.handleSelection([])
-        console.log(songs)
+        LOGIC.deleteSongs(songs, () => {
+            this.retrieveSongs()
+        })
     }
 
 
