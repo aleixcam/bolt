@@ -94,7 +94,7 @@ class App extends Component {
     handleMainClick = event => {
         let result = false;
         for (var i = 0; i < event.path.length; i++) {
-            if (event.path[i].classList && event.path[i].classList.contains('selectable')) {
+            if (event.path[i].classList && (event.path[i].classList.contains('selectable') || event.path[i].classList.contains('react-contexify'))) {
                 result = true
                 break
             }
