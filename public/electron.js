@@ -4,6 +4,7 @@ const { app, BrowserWindow, ipcMain, Menu } = require('electron')
 const isDev = require('electron-is-dev')
 const Nucleus = require('electron-nucleus')('5bf7104364ad4a01c40ce731')
 
+const SETUP = require('./js/setup')
 const PARAMETERS = require('./js/parameters')
 const SONGS = require('./js/songs')
 const SCAN = require('./js/scan')
@@ -80,13 +81,7 @@ function createMainMenu() {
                 { type: 'separator' },
                 {
                     label: 'Update Library',
-                    click () {
-                        mainWindow.webContents.send('alert:scanStart')
-                        SCAN.scanLibrary(() => {
-                            Nucleus.track("SCANNED_LIBRARY")
-                            mainWindow.webContents.send('alert:scanEnd')
-                        })
-                    }
+                    click () { updateLibrary() }
                 },
                 { type: 'separator' },
                 { role: 'quit' }
@@ -139,11 +134,20 @@ function createMainMenu() {
 	]
 
 	Menu.setApplicationMenu(Menu.buildFromTemplate(template))
-};
+}
+
+function updateLibrary() {
+    const alert = PARAMETERS.getByName('scanAlert').value
+    mainWindow.webContents.send('alert:scanStart', alert)
+    SCAN.scanLibrary(() => {
+        Nucleus.track("SCANNED_LIBRARY")
+        mainWindow.webContents.send('alert:scanEnd', alert)
+    })
+}
 
 app.on('ready', () => {
-    if (!isDev) PARAMETERS.environmentSetup()
 	createPreloaderWindow()
+    SETUP.environmentSetup()
 
     SCAN.scanLibrary(() => {
         createMainWindow()
@@ -210,6 +214,11 @@ app.on('ready', () => {
 	ipcMain.on('songs:groupByDecades', function(event, songs) {
 		const decades = SONGS.groupByDecades(songs)
 		event.sender.send('songs:groupByDecades:reply', decades)
+	})
+
+	ipcMain.on('songs:delete', function(event, song) {
+		const confirm = SONGS.delete(song)
+		event.sender.send('songs:delete:reply', confirm)
 	})
 
 	ipcMain.on('scan:getEncoded', function(event, song) {
