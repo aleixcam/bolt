@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ContextMenu, MenuItem } from "react-contextmenu";
+import { Menu, Item, Separator } from 'react-contexify'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Sidenav from './Sidenav'
@@ -20,7 +20,7 @@ class App extends Component {
             version: false,
             songs: [],
             selection: createSelection(),
-            view: 'Albums',
+            view: 'Artists',
             currentSong: {},
             currentPlaylist: [],
             open: false,
@@ -94,7 +94,7 @@ class App extends Component {
     handleMainClick = event => {
         let result = false;
         for (var i = 0; i < event.path.length; i++) {
-            if (event.path[i].classList && event.path[i].classList.contains('selectable')) {
+            if (event.path[i].classList && (event.path[i].classList.contains('selectable') || event.path[i].classList.contains('react-contexify'))) {
                 result = true
                 break
             }
@@ -104,6 +104,24 @@ class App extends Component {
             this.state.selection.getSelection().forEach(s => s.classList.remove('selected'))
             this.state.selection.clearSelection()
         }
+    }
+
+    handleSelection = songs => {
+        const selection = this.state.selection.getSelection()
+        if (selection.length > 0) {
+            selection.forEach(selected => {
+                Array.from(selected.children).forEach(child => {
+                    if (child.nodeName === 'INPUT' && child.type === 'hidden') {
+                        const song = this.state.songs.find(song => song.id === parseInt(child.defaultValue, 10))
+                        if (song && !songs.find(playing => song.id === playing.id)) {
+                            songs.push(song)
+                        }
+                    }
+                })
+            })
+        }
+
+        return songs
     }
 
 
@@ -116,27 +134,12 @@ class App extends Component {
     }
 
     handlePlay = (songs, shuffle = false) => {
-        const selection = this.state.selection.getSelection()
-        if (selection.length > 0) {
-            window.Nucleus.track("PLAYED_SELECTED_SONGS")
-
-            selection.forEach(selected => {
-                Array.from(selected.children).forEach(child => {
-                    if (child.nodeName === 'INPUT' && child.type === 'hidden') {
-                        const song = this.state.songs.find(song => song.id === parseInt(child.defaultValue, 10))
-                        if (song && !songs.find(playing => song.id === playing.id)) {
-                            songs.push(song)
-                        }
-                    }
-                })
-            })
-        } else {
-            window.Nucleus.track("PLAYED_SONGS")
-        }
-
+        songs = this.handleSelection(songs)
         shuffle = this.state.shuffle || shuffle
+
         PLAYER.play(songs, shuffle, song => {
             this.setState({ playing: true, currentSong: song, currentPlaylist: songs, shuffle }, () => {
+                window.Nucleus.track("PLAYED_SONGS")
                 this.audioPlayer.current.currentTime = 0
                 this.audioPlayer.current.play()
             })
@@ -245,8 +248,35 @@ class App extends Component {
             })
     }
 
+
+    /******************************************************************************************/
+    /**** CONTEXT MENU ************************************************************************/
+    /******************************************************************************************/
+
+    handlePlayNext = () => {
+        const songs = this.handleSelection([])
+        const current = this.state.currentPlaylist.findIndex(track => track.id === this.state.currentSong.id)
+        this.setState({ currentPlaylist: PLAYER.addNext(songs, this.state.currentPlaylist, current) })
+    }
+
+    handleAddSongsToPlaylist = () => {
+        const songs = this.handleSelection([])
+        this.setState({ currentPlaylist: PLAYER.addLast(songs, this.state.currentPlaylist) })
+    }
+
+    handleDeleteSongs = () => {
+        const songs = this.handleSelection([])
+        console.log(songs)
+    }
+
+
+    /******************************************************************************************/
+    /**** RENDER ******************************************************************************/
+    /******************************************************************************************/
+
     render() {
         return <div className={this.state.open ? "app open" : "app"}>
+
             <Sidenav onClick={this.handleMenuClick} active={this.state.view}>
                 <li>Albums<span className="fas fa-square"></span></li>
                 <li>Artists<span className="fas fa-male"></span></li>
@@ -310,16 +340,15 @@ class App extends Component {
                 </section>
             </aside>
 
+            <Menu id="songs">
+                <Item onClick={this.handlePlayNext}>Play next</Item>
+                <Item onClick={this.handleAddSongsToPlaylist}>Add to current playlist</Item>
+                <Separator/>
+                <Item onClick={this.handleDeleteSongs}>Delete from library</Item>
+            </Menu>
+
             <Parameters version={this.state.version} />
-
             <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
-
-            <ContextMenu id="song">
-                <MenuItem>Play next</MenuItem>
-                <MenuItem>Play later</MenuItem>
-                <MenuItem divider />
-                <MenuItem>Delete from library</MenuItem>
-            </ContextMenu>
         </div>
     }
 }

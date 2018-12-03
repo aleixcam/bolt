@@ -31,7 +31,9 @@ class Groups extends Component {
             })
 
             this.setState({ groups })
-            if (groups.length > 0) this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
+            if (groups.length > 0 && Object.keys(this.state.group).length <= 0) {
+                this.setState({ group: LOGIC.hydrateGroup(groups[0]) })
+            }
         })
     }
 
