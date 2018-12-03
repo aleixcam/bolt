@@ -212,6 +212,11 @@ app.on('ready', () => {
 		event.sender.send('songs:groupByDecades:reply', decades)
 	})
 
+	ipcMain.on('songs:delete', function(event, song) {
+		const confirm = SONGS.delete(song)
+		event.sender.send('songs:delete:reply', confirm)
+	})
+
 	ipcMain.on('scan:getEncoded', function(event, song) {
 		try {
 			if (!song || typeof song !== 'object') throw Error('Invalid argument passed as song')

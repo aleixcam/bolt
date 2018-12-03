@@ -81,6 +81,17 @@ const LOGIC = {
         group.countAlbums = this.countAlbums(group.albums)
         group.countSongs = this.countSongs(group.songs)
         return group
+    },
+
+    deleteSongs(songs, callback) {
+        let pending = songs.length
+        songs.forEach(song => {
+            window.ipcRenderer.send('songs:delete', song)
+            window.ipcRenderer.on('songs:delete:reply', (event, confirm) => {
+                if (confirm) pending--
+                if (!pending) callback()
+            })
+        })
     }
 }
 
