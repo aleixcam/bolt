@@ -1,12 +1,15 @@
 import React, { Component } from 'react'
+import { MenuProvider } from 'react-contexify'
 import LOGIC from '../logic'
 
 function Cover(props) {
     return <article className="cover">
         <div className="cover__image" onDoubleClick={() => props.onDoubleClick(props.album.songs)}>
-            <div className="selectable" style={{backgroundImage: 'url("'+props.album.cover+'")'}} onContextMenu={() => console.log('context')}>
-                {props.album.songs.map(song => <input key={song.id} type="hidden" value={song.id} />)}
-            </div>
+            <MenuProvider id="songs">
+                <div className="selectable" style={{backgroundImage: 'url("'+props.album.cover+'")'}}>
+                    {props.album.songs.map(song => <input key={song.id} type="hidden" value={song.id} />)}
+                </div>
+            </MenuProvider>
         </div>
         <small className="cover__title cover__title--small">{props.album.artist}</small>
         <h4 className="cover__title">{props.album.album}</h4>

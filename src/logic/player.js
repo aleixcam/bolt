@@ -31,6 +31,26 @@ const PLAYER = {
     random(songs, callback) {
         const index = Math.floor(Math.random() * songs.length)
         if (songs[index]) this.encode(songs[index], callback)
+    },
+
+    addNext(songs, playlist, current) {
+        songs.forEach(song => {
+            const repeated = playlist.findIndex(track => track.id === song.id)
+            if (repeated >= 0) playlist.splice(repeated, 1)
+            playlist.splice(current + 1, 0, song)
+        })
+
+        return playlist
+    },
+
+    addLast(songs, playlist) {
+        songs.forEach(song => {
+            if (playlist.findIndex(track => track.id === song.id) < 0) {
+                playlist.push(song)
+            }
+        })
+
+        return playlist
     }
 }
 

@@ -255,12 +255,13 @@ class App extends Component {
 
     handlePlayNext = () => {
         const songs = this.handleSelection([])
-        console.log(songs)
+        const current = this.state.currentPlaylist.findIndex(track => track.id === this.state.currentSong.id)
+        this.setState({ currentPlaylist: PLAYER.addNext(songs, this.state.currentPlaylist, current) })
     }
 
     handleAddSongsToPlaylist = () => {
         const songs = this.handleSelection([])
-        console.log(songs)
+        this.setState({ currentPlaylist: PLAYER.addLast(songs, this.state.currentPlaylist) })
     }
 
     handleDeleteSongs = () => {
@@ -339,7 +340,7 @@ class App extends Component {
                 </section>
             </aside>
 
-            <Menu id="song">
+            <Menu id="songs">
                 <Item onClick={this.handlePlayNext}>Play next</Item>
                 <Item onClick={this.handleAddSongsToPlaylist}>Add to current playlist</Item>
                 <Separator/>
