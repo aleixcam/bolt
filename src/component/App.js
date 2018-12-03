@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { ContextMenu, MenuItem } from "react-contextmenu";
+import { Menu, Item, Separator } from 'react-contexify'
 import { ToastContainer, toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 import Sidenav from './Sidenav'
@@ -247,6 +247,7 @@ class App extends Component {
 
     render() {
         return <div className={this.state.open ? "app open" : "app"}>
+
             <Sidenav onClick={this.handleMenuClick} active={this.state.view}>
                 <li>Albums<span className="fas fa-square"></span></li>
                 <li>Artists<span className="fas fa-male"></span></li>
@@ -310,16 +311,15 @@ class App extends Component {
                 </section>
             </aside>
 
+            <Menu id="song">
+                <Item>Play next</Item>
+                <Item>Add to current playlist</Item>
+                <Separator/>
+                <Item>Delete from library</Item>
+            </Menu>
+
             <Parameters version={this.state.version} />
-
             <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
-
-            <ContextMenu id="song">
-                <MenuItem>Play next</MenuItem>
-                <MenuItem>Play later</MenuItem>
-                <MenuItem divider />
-                <MenuItem>Delete from library</MenuItem>
-            </ContextMenu>
         </div>
     }
 }

@@ -825,22 +825,22 @@
     }
 }
 
-.react-contextmenu {
-    padding: .25rem;
+.react-contexify {
+    position: fixed;
+    user-select: none;
     background-color: darken($color-background, 3%);
     border: 1px solid darken($color-background, 7%);
+    padding: .25rem;
     z-index: 1000;
 
-    &-item {
+    &__item {
         padding: .5rem 1rem;
-        font-weight: 400;
-        font-size: 16px;
         border-radius: .75rem;
 
-        &--divider {
-            margin: .25rem -.25rem;
-            padding: 0;
-            border-top: 1px solid darken($color-background, 7%);
+        &__content {
+            color: $color-text;
+            font-size: 16px;
+            font-weight: 400;
         }
 
         &:hover {
@@ -848,8 +848,14 @@
             cursor: pointer;
         }
 
-        & + .react-contextmenu-item {
+        & + .react-contexify__item {
             margin-top: .25rem;
         }
+    }
+
+    &__separator {
+        margin: .25rem -.25rem;
+        padding: 0;
+        border-top: 1px solid darken($color-background, 7%);
     }
 }

@@ -738,29 +738,34 @@ input, button, textarea, :focus {
   display: none;
 }
 
-.react-contextmenu {
-  padding: 0.25rem;
+.react-contexify {
+  position: fixed;
+  user-select: none;
   background-color: #272b26;
   border: 1px solid #1d201c;
+  padding: 0.25rem;
   z-index: 1000;
 }
-.react-contextmenu-item {
+.react-contexify__item {
   padding: 0.5rem 1rem;
-  font-weight: 400;
-  font-size: 16px;
   border-radius: 0.75rem;
 }
-.react-contextmenu-item--divider {
-  margin: 0.25rem -0.25rem;
-  padding: 0;
-  border-top: 1px solid #1d201c;
+.react-contexify__item__content {
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 400;
 }
-.react-contextmenu-item:hover {
+.react-contexify__item:hover {
   background-color: #2e332d;
   cursor: pointer;
 }
-.react-contextmenu-item + .react-contextmenu-item {
+.react-contexify__item + .react-contexify__item {
   margin-top: 0.25rem;
+}
+.react-contexify__separator {
+  margin: 0.25rem -0.25rem;
+  padding: 0;
+  border-top: 1px solid #1d201c;
 }
 
 /*# sourceMappingURL=index.css.map */

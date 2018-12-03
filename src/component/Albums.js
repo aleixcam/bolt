@@ -4,7 +4,7 @@ import LOGIC from '../logic'
 function Cover(props) {
     return <article className="cover">
         <div className="cover__image" onDoubleClick={() => props.onDoubleClick(props.album.songs)}>
-            <div className="selectable" style={{backgroundImage: 'url("'+props.album.cover+'")'}}>
+            <div className="selectable" style={{backgroundImage: 'url("'+props.album.cover+'")'}} onContextMenu={() => console.log('context')}>
                 {props.album.songs.map(song => <input key={song.id} type="hidden" value={song.id} />)}
             </div>
         </div>
