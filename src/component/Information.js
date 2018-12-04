@@ -12,12 +12,14 @@ class Information extends Component {
             open: false,
             view: 'Details'
         }
+
+        this.songsForm = React.createRef()
     }
 
     componentWillMount() {
         window.ipcRenderer.on('modal:information', (event, songs) => {
             const information = LOGIC.retrieveInfo(songs)
-            this.setState({ open: true, ...information }, () => {
+            this.setState({ open: true, songs, ...information }, () => {
                 window.Nucleus.track("OPENED_INFORMATION")
             })
         })
@@ -28,21 +30,62 @@ class Information extends Component {
     }
 
     closeModal = () => {
+        const info = {}
+        for (let i = 0; i < this.songsForm.current.elements.length; i++) {
+            if (this.songsForm.current.elements[i].value) {
+                info[this.songsForm.current.elements[i].name] = this.songsForm.current.elements[i].value
+            }
+        }
+
+        if (info.disk || info.disks) {
+            info.disk = {
+                no: info.disk || null,
+                of: info.disks || null
+            }
+
+            delete info.disks
+        }
+
+        if (info.track || info.tracks) {
+            info.track = {
+                no: info.track || null,
+                of: info.tracks || null
+            }
+
+            delete info.tracks
+        }
+
         this.setState({ open: false }, () => {
+            window.ipcRenderer.send('songs:update', this.state.songs, info)
             window.Nucleus.track("CLOSED_INFORMATION")
         })
     }
 
-    setDefaultValue = input => {
-        return (this.state[input]+'').startsWith('%') ? {placeholder: this.state[input].substr(1)} : {defaultValue: this.state[input]}
+    setInputProps = input => {
+        const props = {
+            name: input,
+            onChange: event => this.handleValueChange(input, event)
+        }
+
+        if ((this.state[input]+'').startsWith('%')) {
+            props.placeholder = this.state[input].substr(1)
+        } else {
+            props.defaultValue = this.state[input]
+        }
+
+        return props
+    }
+
+    handleValueChange = (value, event) => {
+        this.setState({ [value]: event.target.value })
     }
 
     render() {
-        return <Modal isOpen={this.state.open} className="modal" overlayClassName="modal-overlay">
+        return this.state.open && <Modal isOpen={this.state.open} className="modal" overlayClassName="modal-overlay">
             <Sidenav onClick={this.handleMenuClick} active={this.state.view}>
                 <li>Details</li>
                 <li>Cover</li>
-                <li>File</li>
+                {this.state.songs.length < 2 && (<li>File</li>)}
             </Sidenav>
 
             <section className="modal-header modal-header--track">
@@ -64,62 +107,67 @@ class Information extends Component {
                 </button>
             </section>
 
-            {this.state.open && (
+
                 <section className="modal-body">
                     <section className={'modal-body__view'+(this.state.view==='Details'?' modal-body__view--active':'')}>
-                        <form className="modal-body__section">
+                        <form ref={this.songsForm} className="modal-body__section">
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Title</label>
-                                <input type="text" className="modal-body__input" onChange={this.handleChangeTitle} {...this.setDefaultValue('title')} />
+                                <input type="text" className="modal-body__input" {...this.setInputProps('title')} />
                             </div>
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Artist</label>
-                                <input type="text" className="modal-body__input" onChange={this.handleChangeArtist} {...this.setDefaultValue('artist')} />
+                                <input type="text" className="modal-body__input" {...this.setInputProps('artist')} />
                             </div>
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Album</label>
-                                <input type="text" className="modal-body__input" onChange={this.handleChangeAlbum} {...this.setDefaultValue('album')} />
+                                <input type="text" className="modal-body__input" {...this.setInputProps('album')} />
                             </div>
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Album artist</label>
-                                <input type="text" className="modal-body__input" onChange={this.handleChangeAlbumartist} {...this.setDefaultValue('albumartist')} />
+                                <input type="text" className="modal-body__input" {...this.setInputProps('albumartist')} />
                             </div>
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Genre</label>
-                                <input type="text" className="modal-body__input" onChange={this.handleChangeGenre} {...this.setDefaultValue('genre')} />
+                                <input type="text" className="modal-body__input" {...this.setInputProps('genre')} />
                             </div>
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Year</label>
-                                <input type="text" className="modal-body__input" onChange={this.handleChangeYear} {...this.setDefaultValue('year')} />
+                                <input type="text" className="modal-body__input" {...this.setInputProps('year')} />
                             </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Track</label>
-                                <div className="modal-body__inline">
-                                    <input type="text" className="modal-body__input" onChange={this.handleChangeTrack} {...this.setDefaultValue('track')} />
-                                    <label className="modal-body__text">of</label>
-                                    <input type="text" className="modal-body__input" onChange={this.handleChangeTracks} {...this.setDefaultValue('tracks')} />
+                            {this.state.songs.length < 2 && (
+                                <div className="modal-body__group">
+                                    <label className="modal-body__text">Track</label>
+                                    <div className="modal-body__inline">
+                                        <input type="text" className="modal-body__input" {...this.setInputProps('track')} />
+                                        <label className="modal-body__text">of</label>
+                                        <input type="text" className="modal-body__input" {...this.setInputProps('tracks')} />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Disk</label>
-                                <div className="modal-body__inline">
-                                    <input type="text" className="modal-body__input" onChange={this.handleChangeDisk} {...this.setDefaultValue('disk')} />
-                                    <label className="modal-body__text">of</label>
-                                    <input type="text" className="modal-body__input" onChange={this.handleChangeDisks} {...this.setDefaultValue('disks')} />
+                            )}
+                            {this.state.songs.length < 2 && (
+                                <div className="modal-body__group">
+                                    <label className="modal-body__text">Disk</label>
+                                    <div className="modal-body__inline">
+                                        <input type="text" className="modal-body__input" {...this.setInputProps('disk')} />
+                                        <label className="modal-body__text">of</label>
+                                        <input type="text" className="modal-body__input" {...this.setInputProps('disks')} />
+                                    </div>
                                 </div>
-                            </div>
+                            )}
                             <div className="modal-body__group">
                                 <label className="modal-body__text">Comment</label>
-                                <textarea className="modal-body__input modal-body__input--textarea" onChange={this.handleChangeComment} {...this.setDefaultValue('comment')} />
+                                <textarea className="modal-body__input modal-body__input--textarea" {...this.setInputProps('comment')} />
                             </div>
                         </form>
                     </section>
                     <section className={'modal-body__view'+(this.state.view==='Cover'?' modal-body__view--active':'')}>
                     </section>
-                    <section className={'modal-body__view'+(this.state.view==='File'?' modal-body__view--active':'')}>
-                    </section>
+                    {this.state.songs.length < 2 && (
+                        <section className={'modal-body__view'+(this.state.view==='File'?' modal-body__view--active':'')}>
+                        </section>
+                    )}
                 </section>
-            )}
         </Modal>
     }
 }

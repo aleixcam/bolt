@@ -117,10 +117,6 @@ const LOGIC = {
             if (song.genre !== info.genre) info.genre = '%Various genres'
             if (song.year !== info.year) info.year = '%Various years'
             if (song.comment !== info.comment) info.comment = '%Various comments'
-            if (song.disk !== info.disk) info.disk = '%-'
-            if (song.disks !== info.disks) info.disks = '%-'
-            if (song.track !== info.track) info.track = '%-'
-            if (song.tracks !== info.tracks) info.tracks = '%-'
         })
 
         if (songs.length > 1) {

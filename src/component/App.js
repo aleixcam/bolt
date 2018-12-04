@@ -43,6 +43,10 @@ class App extends Component {
             this.retrieveSongs()
             if (alert) toast.success('Your library has been successfully updated')
         })
+
+        window.ipcRenderer.on('songs:update:reply', event => {
+            this.retrieveSongs()
+        })
     }
 
     componentDidMount() {
@@ -95,7 +99,7 @@ class App extends Component {
     handleMainClick = event => {
         let result = false;
         for (var i = 0; i < event.path.length; i++) {
-            if (event.path[i].classList && (event.path[i].classList.contains('selectable') || event.path[i].classList.contains('react-contexify'))) {
+            if (event.path[i].classList && (event.path[i].classList.contains('selectable') || event.path[i].classList.contains('modal') || event.path[i].classList.contains('react-contexify'))) {
                 result = true
                 break
             }
@@ -265,16 +269,16 @@ class App extends Component {
         this.setState({ currentPlaylist: PLAYER.addLast(songs, this.state.currentPlaylist) })
     }
 
-    handleSongInfo = () => {
-        const songs = this.handleSelection([])
-        window.ipcRenderer.send('songs:information', songs)
-    }
-
     handleDeleteSongs = () => {
         const songs = this.handleSelection([])
         LOGIC.deleteSongs(songs, () => {
             this.retrieveSongs()
         })
+    }
+
+    handleInfoSongs = () => {
+        const songs = this.handleSelection([])
+        window.ipcRenderer.send('songs:information', songs)
     }
 
 
@@ -355,7 +359,7 @@ class App extends Component {
                 <Item onClick={this.handlePlayNext}>Play next</Item>
                 <Item onClick={this.handleAddSongsToPlaylist}>Add to current playlist</Item>
                 <Separator />
-                <Item onClick={this.handleSongInfo}>Information</Item>
+                <Item onClick={this.handleInfoSongs}>Information</Item>
                 <Separator />
                 <Item onClick={this.handleDeleteSongs}>Delete from library</Item>
             </Menu>

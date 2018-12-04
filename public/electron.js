@@ -216,6 +216,11 @@ app.on('ready', () => {
 		event.sender.send('songs:groupByDecades:reply', decades)
 	})
 
+	ipcMain.on('songs:update', function(event, songs, info) {
+        songs.forEach(song => SONGS.update(song, info))
+        event.sender.send('songs:update:reply')
+	})
+
 	ipcMain.on('songs:delete', function(event, song) {
 		const confirm = SONGS.delete(song)
 		event.sender.send('songs:delete:reply', confirm)

@@ -67,6 +67,29 @@ const SONGS = {
         return decades
     },
 
+    update(song, query) {
+        const songsTable = new SongsTable()
+        song = songsTable.get(song.id)
+        console.log(song);
+        for (var key in query) {
+            if (song.hasOwnProperty(key)) {
+                switch (key) {
+                    case 'year':
+                        song[key] = parseInt(query[key])
+                        break;
+                    case 'disk':
+                    case 'track':
+                        song[key] = parseInt(query[key].no)
+                        break;
+                    default:
+                        song[key] = query[key]
+                }
+            }
+        }
+        console.log(song);
+        return songsTable.save(song)
+    },
+
     delete(song) {
         const songsTable = new SongsTable()
         return songsTable.delete(song)
