@@ -9,6 +9,7 @@ import Groups from './Groups'
 import Player from './Player'
 import Playlist from './Playlist'
 import Parameters from './Parameters'
+import Information from './Information'
 import LOGIC from '../logic'
 import PLAYER from '../logic/player'
 import createSelection from '../logic/selection'
@@ -264,6 +265,10 @@ class App extends Component {
         this.setState({ currentPlaylist: PLAYER.addLast(songs, this.state.currentPlaylist) })
     }
 
+    handleSongInfo = () => {
+        console.log('info')
+    }
+
     handleDeleteSongs = () => {
         const songs = this.handleSelection([])
         LOGIC.deleteSongs(songs, () => {
@@ -342,14 +347,18 @@ class App extends Component {
                 </section>
             </aside>
 
+            <Parameters version={this.state.version} />
+            <Information />
+
             <Menu id="songs">
                 <Item onClick={this.handlePlayNext}>Play next</Item>
                 <Item onClick={this.handleAddSongsToPlaylist}>Add to current playlist</Item>
-                <Separator/>
+                <Separator />
+                <Item onClick={this.handleSongInfo}>Information</Item>
+                <Separator />
                 <Item onClick={this.handleDeleteSongs}>Delete from library</Item>
             </Menu>
 
-            <Parameters version={this.state.version} />
             <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
         </div>
     }
