@@ -613,6 +613,9 @@ input, button, textarea, :focus {
   background: transparent;
   cursor: default;
 }
+.modal-header--track + section {
+  margin-top: calc(80px - 3rem);
+}
 .modal-header__title {
   margin: 0;
   padding: 0 2.25rem;
@@ -631,7 +634,8 @@ input, button, textarea, :focus {
 .modal-body {
   grid-column: 2;
   grid-row: 2;
-  padding: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  overflow-y: auto;
 }
 .modal-body__view {
   display: none;
@@ -652,14 +656,38 @@ input, button, textarea, :focus {
   font-size: 24px;
   font-weight: 400;
 }
+.modal-body__group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.modal-body__group .modal-body__text {
+  min-width: 110px;
+  line-height: 2rem;
+  text-align: right;
+}
+.modal-body__group .modal-body__input {
+  margin: 0 0.5rem 0;
+  padding: 0.25rem 0.75rem;
+}
+.modal-body__inline {
+  display: flex;
+  width: -webkit-fill-available;
+}
+.modal-body__inline .modal-body__input {
+  width: 30px;
+}
+.modal-body__inline .modal-body__text {
+  min-width: unset;
+}
 .modal-body__text {
   margin: 0;
   font-size: 16px;
 }
 .modal-body__input {
   width: -webkit-fill-available;
-  height: 1.75rem;
-  margin-top: 0.5rem;
+  height: 1.5rem;
+  margin-top: 0.25rem;
   border: 0;
   border-radius: 0.75rem;
   padding: 0.25rem 1.25rem;
@@ -668,6 +696,14 @@ input, button, textarea, :focus {
   font-size: 14px;
   line-height: 1.75rem;
   font-weight: 600;
+}
+.modal-body__input--textarea {
+  resize: none;
+  height: 3rem;
+  overflow: visible;
+}
+.modal-body__input::placeholder {
+  color: #a7a7a7;
 }
 .modal-body__button {
   height: 2.25rem;
