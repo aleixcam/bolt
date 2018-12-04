@@ -217,8 +217,14 @@ app.on('ready', () => {
 	})
 
 	ipcMain.on('songs:update', function(event, songs, info) {
-        songs.forEach(song => SONGS.update(song, info))
-        event.sender.send('songs:update:reply')
+        let pending = songs.length
+        songs.forEach(song => {
+            SCAN.editMetadata(song, info, path => {
+                SONGS.update(song, {path, ...info})
+            })
+        })
+
+        if (!--pending) event.sender.send('songs:update:reply')
 	})
 
 	ipcMain.on('songs:delete', function(event, song) {
@@ -238,7 +244,10 @@ app.on('ready', () => {
                 const cover = data.picture ? `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}` : './img/placeholder.png'
                 delete data.picture
 
-                songs[index] = {...song, ...data, genre, cover}
+                const comment = data.comment && data.comment[0]
+                delete data.comment
+
+                songs[index] = {...song, ...data, genre, cover, comment}
 				if (!--pending) mainWindow.webContents.send('modal:information', songs)
 			})
 		})
