@@ -1,8 +1,6 @@
 import React, { Component } from 'react'
 import Modal from 'react-modal'
 import Sidenav from './Sidenav'
-import Track from './Track'
-import LOGIC from '../logic'
 
 Modal.setAppElement('#root')
 
@@ -19,6 +17,7 @@ class Information extends Component {
     componentWillMount() {
         window.ipcRenderer.on('modal:information', (event, songs) => {
             this.setState({ open: true, songs }, () => {
+                console.log(this.state.songs)
                 window.Nucleus.track("OPENED_INFORMATION")
             })
         })
@@ -42,8 +41,20 @@ class Information extends Component {
                 <li>File</li>
             </Sidenav>
 
-            <section className="modal-header">
-                <Track className="modal-header__track" track={this.state.song} onPlay={null} />)
+            <section className="modal-header modal-header--track">
+                {this.state.songs && this.state.songs.length > 0 && (
+                    <section className="track track--current">
+                        <div className="track__image track__image--current">
+                            <div style={{backgroundImage: 'url("'+this.state.songs[0].cover+'")'}}></div>
+                        </div>
+                        <div className="track__text">
+                            <h1>{this.state.songs[0].title || '\xa0'}</h1>
+                            <p>{this.state.songs[0].artist || '\xa0'}</p>
+                            <p>{this.state.songs[0].album || '\xa0'}</p>
+                        </div>
+                    </section>
+                )}
+                
                 <button className="modal-header__button" onClick={this.closeModal}>
                     <span className="fas fa-times"></span>
                 </button>

@@ -266,7 +266,8 @@ class App extends Component {
     }
 
     handleSongInfo = () => {
-        console.log('info')
+        const songs = this.handleSelection([])
+        window.ipcRenderer.send('songs:information', songs)
     }
 
     handleDeleteSongs = () => {
