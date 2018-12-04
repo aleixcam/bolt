@@ -81,6 +81,56 @@ const LOGIC = {
         group.countAlbums = this.countAlbums(group.albums)
         group.countSongs = this.countSongs(group.songs)
         return group
+    },
+
+    deleteSongs(songs, callback) {
+        let pending = songs.length
+        songs.forEach(song => {
+            window.ipcRenderer.send('songs:delete', song)
+            window.ipcRenderer.on('songs:delete:reply', (event, confirm) => {
+                if (confirm) pending--
+                if (!pending) callback()
+            })
+        })
+    },
+
+    retrieveInfo(songs) {
+        const info = {
+            title: songs[0].title,
+            artist: songs[0].artist,
+            album: songs[0].album,
+            albumartist: songs[0].albumartist,
+            cover: songs[0].cover,
+            genre: songs[0].genre,
+            year: songs[0].year,
+            disk: songs[0].disk.no,
+            disks: songs[0].disk.of,
+            track: songs[0].track.no,
+            tracks: songs[0].track.of,
+            comment: songs[0].comment
+        }
+
+        songs.forEach(song => {
+            if (song.artist !== info.artist) info.artist = '%Various artists'
+            if (song.album !== info.album) info.album = '%Various albums'
+            if (song.albumartist !== info.albumartist) info.albumartist = '%Various album artists'
+            if (song.genre !== info.genre) info.genre = '%Various genres'
+            if (song.year !== info.year) info.year = '%Various years'
+            if (song.comment !== info.comment) info.comment = '%Various comments'
+            if (song.disk !== info.disk) info.disk = '%-'
+            if (song.disks !== info.disks) info.disks = '%-'
+            if (song.track !== info.track) info.track = '%-'
+            if (song.tracks !== info.tracks) info.tracks = '%-'
+        })
+
+        if (songs.length > 1) {
+            info.title = '%' + this.countSongs(songs)
+        } else {
+            info.path = songs[0].path
+            info.encodersettings = songs[0].encodersettings
+        }
+
+        return info
     }
 }
 

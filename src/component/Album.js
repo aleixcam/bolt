@@ -1,4 +1,5 @@
 import React from 'react'
+import { MenuProvider } from 'react-contexify'
 import Header from './Header'
 
 function Album(props) {
@@ -18,11 +19,13 @@ function Album(props) {
                 {disk && <li className="song song--disk">{`Disk ${disk}`}</li>}
                 {props.album.songs.reduce((filtered, song) => {
                     if (song.disk === disk) {
-                        filtered.push(<li key={song.id} className="song selectable" onDoubleClick={() => props.onPlay([song])}>
-                            <p className="song__track">{song.track}</p>
-                            <p className="song__title">{song.title}</p>
-                            <input type="hidden" value={song.id} />
-                        </li>);
+                        filtered.push(<MenuProvider key={song.id} id="songs">
+                            <li className="song selectable" onDoubleClick={() => props.onPlay([song])}>
+                                <p className="song__track">{song.track}</p>
+                                <p className="song__title">{song.title}</p>
+                                <input type="hidden" value={song.id} />
+                            </li>
+                        </MenuProvider>)
                     }
 
                     return filtered;
