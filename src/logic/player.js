@@ -21,7 +21,7 @@ const PLAYER = {
     },
 
     next(songs, current, shuffle, repeat, callback) {
-        if (shuffle) return this.random(songs, repeat, callback)
+        if (shuffle) return this.random(songs, callback)
 
         let index = songs.findIndex(song => current.id === song.id)
         index = index === songs.length - 1 ? (repeat ? 0 : -1) : index + 1

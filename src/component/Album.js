@@ -22,7 +22,7 @@ function Album(props) {
                         filtered.push(<MenuProvider key={song.id} id="songs">
                             <li className="song selectable" onDoubleClick={() => props.onPlay([song])}>
                                 <p className="song__track">{song.track}</p>
-                                <p className="song__title">{song.title}</p>
+                                <p className="song__title">{song.title || song.filename}</p>
                                 <input type="hidden" value={song.id} />
                             </li>
                         </MenuProvider>)
