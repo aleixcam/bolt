@@ -350,38 +350,6 @@
         }
     }
 
-    .cover {
-        min-width: 0;
-
-        &__image {
-            padding-bottom: 100%;
-            margin-bottom: .25rem;
-            width: 100%;
-            @extend %image-square;
-
-            * {
-                border-radius: .75rem;
-                cursor: pointer;
-
-                &.selected {
-                    border: 4px solid $color-primary;
-                }
-            }
-        }
-
-        &__title {
-            margin: 0 0 0 .25rem;
-            font-size: 14px;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-
-            &--small {
-                font-size: 12px;
-            }
-        }
-    }
-
     .album {
         display: flex;
         margin: 1rem 2.5rem;
@@ -575,6 +543,38 @@
     }
 }
 
+.cover {
+    min-width: 0;
+
+    &__image {
+        padding-bottom: 100%;
+        margin-bottom: .25rem;
+        width: 100%;
+        @extend %image-square;
+
+        * {
+            border-radius: .75rem;
+            cursor: pointer;
+
+            &.selected {
+                border: 4px solid $color-primary;
+            }
+        }
+    }
+
+    &__title {
+        margin: 0 0 0 .25rem;
+        font-size: 14px;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &--small {
+            font-size: 12px;
+        }
+    }
+}
+
 .track {
     display: grid;
     grid-template-columns: 70px auto;
@@ -720,6 +720,16 @@
 
             &--active {
                 display: block;
+            }
+
+            .cover {
+                width: 60%;
+                max-width: 320px;
+                margin: 0 auto;
+
+                & + .cover {
+                    margin-top: 2rem;
+                }
             }
         }
 

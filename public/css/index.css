@@ -21,11 +21,11 @@ input, button, textarea, :focus {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.track__image, .app .cover__image {
+.track__image, .cover__image {
   position: relative;
   height: 0;
 }
-.track__image *, .app .cover__image * {
+.track__image *, .cover__image * {
   position: absolute;
   top: 0;
   left: 0;
@@ -313,31 +313,6 @@ input, button, textarea, :focus {
 .app .groups-body-albums {
   overflow-y: auto;
 }
-.app .cover {
-  min-width: 0;
-}
-.app .cover__image {
-  padding-bottom: 100%;
-  margin-bottom: 0.25rem;
-  width: 100%;
-}
-.app .cover__image * {
-  border-radius: 0.75rem;
-  cursor: pointer;
-}
-.app .cover__image *.selected {
-  border: 4px solid #70e100;
-}
-.app .cover__title {
-  margin: 0 0 0 0.25rem;
-  font-size: 14px;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
-.app .cover__title--small {
-  font-size: 12px;
-}
 .app .album {
   display: flex;
   margin: 1rem 2.5rem;
@@ -508,6 +483,32 @@ input, button, textarea, :focus {
   transition: none;
 }
 
+.cover {
+  min-width: 0;
+}
+.cover__image {
+  padding-bottom: 100%;
+  margin-bottom: 0.25rem;
+  width: 100%;
+}
+.cover__image * {
+  border-radius: 0.75rem;
+  cursor: pointer;
+}
+.cover__image *.selected {
+  border: 4px solid #70e100;
+}
+.cover__title {
+  margin: 0 0 0 0.25rem;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.cover__title--small {
+  font-size: 12px;
+}
+
 .track {
   display: grid;
   grid-template-columns: 70px auto;
@@ -642,6 +643,14 @@ input, button, textarea, :focus {
 }
 .modal-body__view--active {
   display: block;
+}
+.modal-body__view .cover {
+  width: 60%;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.modal-body__view .cover + .cover {
+  margin-top: 2rem;
 }
 .modal-body__section {
   margin: 0.25rem 0 1.75rem;

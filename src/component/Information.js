@@ -19,7 +19,8 @@ class Information extends Component {
     componentWillMount() {
         window.ipcRenderer.on('modal:information', (event, songs) => {
             const information = LOGIC.retrieveInfo(songs)
-            this.setState({ open: true, songs, ...information }, () => {
+            const covers = LOGIC.retrieveCovers(songs)
+            this.setState({ open: true, songs, ...information, covers }, () => {
                 window.Nucleus.track("OPENED_INFORMATION")
             })
         })
@@ -162,6 +163,13 @@ class Information extends Component {
                         </form>
                     </section>
                     <section className={'modal-body__view'+(this.state.view==='Cover'?' modal-body__view--active':'')}>
+                        {this.state.covers && this.state.covers.length > 0 && (
+                            this.state.covers.map((cover, index) => <article key={index} className="cover">
+                                <div className="cover__image">
+                                    <div style={{backgroundImage: 'url("'+cover+'")'}}></div>
+                                </div>
+                            </article>)
+                        )}
                     </section>
                     {this.state.songs.length < 2 && (
                         <section className={'modal-body__view'+(this.state.view==='File'?' modal-body__view--active':'')}>

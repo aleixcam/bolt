@@ -130,7 +130,7 @@ const SCAN = {
             }
         }
 
-        NodeID3.write(tags, song.path)
+        NodeID3.update(tags, song.path)
         this._organizeLibrary(libraryDirectory, [song.path], (err, moved) => {
             callback(moved.path)
         })

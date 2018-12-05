@@ -127,6 +127,21 @@ const LOGIC = {
         }
 
         return info
+    },
+
+    retrieveCovers(songs) {
+        const covers = []
+        songs.forEach(song => {
+            if (!covers.includes(song.cover) && song.cover.startsWith('data:image')) {
+                covers.push(song.cover)
+            }
+        })
+
+        return covers
+    },
+
+    retrieveFormat(song) {
+        console.log(song);
     }
 }
 

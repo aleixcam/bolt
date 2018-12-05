@@ -21,7 +21,7 @@ class App extends Component {
             version: false,
             songs: [],
             selection: createSelection(),
-            view: 'Artists',
+            view: 'Albums',
             currentSong: {},
             currentPlaylist: [],
             open: false,
