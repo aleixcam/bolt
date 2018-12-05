@@ -62,8 +62,18 @@ html {
   background-color: #1d201c;
   overflow: hidden;
 }
+@media screen and (max-width: 540px) {
+  .landing .header {
+    max-height: 80vh;
+  }
+}
 .landing .header-case {
   margin: 3rem 0 2rem;
+}
+@media screen and (max-width: 720px) {
+  .landing .header-case {
+    width: 160vw;
+  }
 }
 .landing .header-download {
   margin-top: 1.5rem;
@@ -130,8 +140,34 @@ html {
   display: grid;
   grid-template-columns: repeat(2, 50%);
 }
+@media screen and (max-width: 720px) {
+  .landing .showcase {
+    grid-template-columns: auto;
+    grid-template-rows: repeat(2, auto);
+  }
+}
 .landing .showcase--odd {
   background-color: #353b34;
+}
+.landing .showcase--odd .showcase__show {
+  grid-column: 2;
+  grid-row: 1;
+}
+@media screen and (max-width: 720px) {
+  .landing .showcase--odd .showcase__show {
+    grid-column: 1;
+    grid-row: 1;
+  }
+}
+.landing .showcase--odd .showcase__case {
+  grid-column: 1;
+  grid-row: 1;
+}
+@media screen and (max-width: 720px) {
+  .landing .showcase--odd .showcase__case {
+    grid-column: 1;
+    grid-row: 2;
+  }
 }
 .landing .showcase__show {
   display: flex;
@@ -145,6 +181,11 @@ html {
   border-radius: 1rem;
   box-shadow: 0px 0px 25px 0px #70e100;
 }
+@media screen and (max-width: 540px) {
+  .landing .showcase__image {
+    width: 150%;
+  }
+}
 .landing .showcase__case {
   display: flex;
   flex-direction: column;
@@ -152,16 +193,31 @@ html {
   align-items: flex-start;
   padding: 2rem;
 }
+@media screen and (max-width: 540px) {
+  .landing .showcase__case {
+    padding-top: 0;
+  }
+}
 .landing .showcase__title {
-  margin: 0;
-  margin-bottom: 0.5rem;
+  margin: 0 0 1.5rem;
   padding: 0 1rem;
   color: #a7b59b;
-  font-size: 48px;
+  font-size: 40px;
   font-weight: 400;
 }
+@media screen and (max-width: 540px) {
+  .landing .showcase__title {
+    font-size: 36px;
+  }
+}
 .landing .showcase__text {
-  margin: 0;
+  margin: 0 0 1rem;
+  font-size: 18px;
+}
+@media screen and (max-width: 540px) {
+  .landing .showcase__text {
+    font-size: 16px;
+  }
 }
 .landing .footer {
   display: flex;
