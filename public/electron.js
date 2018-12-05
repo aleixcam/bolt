@@ -221,6 +221,24 @@ app.on('ready', () => {
 		event.sender.send('songs:delete:reply', confirm)
 	})
 
+	ipcMain.on('songs:information', function(event, songs) {
+        let pending = songs.length
+		songs.forEach((song, index) => {
+			SCAN.getMetadata(song.path, (err, data) => {
+                if (err) console.error(err.message)
+
+                const genre = data.genre && data.genre[0]
+                delete data.genre
+
+                const cover = data.picture ? `data:${data.picture[0].format};base64,${Buffer.from(data.picture[0].data).toString('base64')}` : './img/placeholder.png'
+                delete data.picture
+
+                songs[index] = {...song, ...data, genre, cover}
+				if (!--pending) mainWindow.webContents.send('modal:information', songs)
+			})
+		})
+	})
+
 	ipcMain.on('scan:getEncoded', function(event, song) {
 		try {
 			if (!song || typeof song !== 'object') throw Error('Invalid argument passed as song')
