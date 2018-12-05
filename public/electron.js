@@ -221,10 +221,10 @@ app.on('ready', () => {
         songs.forEach(song => {
             SCAN.editMetadata(song, info, path => {
                 SONGS.update(song, {path, ...info})
+                if (!--pending) event.sender.send('songs:update:reply')
             })
         })
 
-        if (!--pending) event.sender.send('songs:update:reply')
 	})
 
 	ipcMain.on('songs:delete', function(event, song) {
