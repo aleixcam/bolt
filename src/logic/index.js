@@ -93,6 +93,9 @@ const LOGIC = {
     },
 
     deleteSongs(songs, callback) {
+        if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
+        if (typeof callback !== 'function') throw Error('callback is not a function');
+
         let pending = songs.length
         songs.forEach(song => {
             window.ipcRenderer.send('songs:delete', song)
@@ -104,6 +107,9 @@ const LOGIC = {
     },
 
     retrieveInfo(songs, callback) {
+        if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
+        if (typeof callback !== 'function') throw Error('callback is not a function');
+
         const info = {
             title: songs[0].title,
             artist: songs[0].artist,
@@ -149,6 +155,8 @@ const LOGIC = {
     },
 
     retrieveCovers(songs) {
+        if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
+
         const covers = []
         songs.forEach(song => {
             if (!covers.includes(song.cover) && song.cover.startsWith('data:image')) {
@@ -157,10 +165,6 @@ const LOGIC = {
         })
 
         return covers
-    },
-
-    retrieveFormat(song) {
-        console.log(song);
     }
 }
 
