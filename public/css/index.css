@@ -21,11 +21,11 @@ input, button, textarea, :focus {
   background: rgba(0, 0, 0, 0.5);
 }
 
-.app .cover__image, .app .track__image {
+.track__image, .app .cover__image {
   position: relative;
   height: 0;
 }
-.app .cover__image *, .app .track__image * {
+.track__image *, .app .cover__image * {
   position: absolute;
   top: 0;
   left: 0;
@@ -277,67 +277,6 @@ input, button, textarea, :focus {
   padding: 0;
   list-style-type: none;
 }
-.app .track {
-  display: grid;
-  grid-template-columns: 70px auto;
-  height: 60px;
-  max-height: 60px;
-}
-.app .track--current {
-  grid-template-columns: 80px auto;
-  height: 80px;
-  max-height: 80px;
-  transition: all 0.1s linear;
-}
-.app .track--current:hover {
-  background-color: #1d201c;
-  cursor: pointer;
-}
-.app .track--current:active {
-  background-color: #272b26;
-  transition: none;
-}
-.app .track--active {
-  background-color: #586156;
-}
-.app .track--unload {
-  color: #a7b59b;
-}
-.app .track__image {
-  width: 50px;
-  margin: 5px 10px;
-  padding-bottom: 50px;
-}
-.app .track__image--current {
-  width: 60px;
-  margin: 10px;
-  padding-bottom: 60px;
-}
-.app .track__image * {
-  border-radius: 0.5rem;
-}
-.app .track__text {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  max-width: 190px;
-  padding-right: 10px;
-}
-.app .track__text h1 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-.app .track__text p {
-  margin: 0;
-  font-size: 14px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .app .groups {
   display: grid;
   grid-template-columns: 200px 1fr;
@@ -569,6 +508,68 @@ input, button, textarea, :focus {
   transition: none;
 }
 
+.track {
+  display: grid;
+  grid-template-columns: 70px auto;
+  height: 60px;
+  max-height: 60px;
+}
+.track--current {
+  grid-template-columns: 80px auto;
+  height: 80px;
+  max-height: 80px;
+  transition: all 0.1s linear;
+}
+.track--current:hover {
+  background-color: #1d201c;
+  cursor: pointer;
+}
+.track--current:active {
+  background-color: #272b26;
+  transition: none;
+}
+.track--active {
+  background-color: #586156;
+}
+.track--unload {
+  color: #a7b59b;
+}
+.track__image {
+  width: 50px;
+  margin: 5px 10px;
+  padding-bottom: 50px;
+}
+.track__image--current {
+  width: 60px;
+  margin: 10px;
+  padding-bottom: 60px;
+}
+.track__image * {
+  border-radius: 0.5rem;
+}
+.track__text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 190px;
+  padding-right: 10px;
+}
+.track__text h1 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.track__text p {
+  margin: 0;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .modal {
   position: absolute;
   top: 50%;
@@ -605,6 +606,16 @@ input, button, textarea, :focus {
   height: 3rem;
   background-color: #181b17;
 }
+.modal-header--track {
+  height: 80px;
+}
+.modal-header--track .track {
+  background: transparent;
+  cursor: default;
+}
+.modal-header--track + section {
+  margin-top: calc(80px - 3rem);
+}
 .modal-header__title {
   margin: 0;
   padding: 0 2.25rem;
@@ -623,7 +634,8 @@ input, button, textarea, :focus {
 .modal-body {
   grid-column: 2;
   grid-row: 2;
-  padding: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  overflow-y: auto;
 }
 .modal-body__view {
   display: none;
@@ -644,14 +656,38 @@ input, button, textarea, :focus {
   font-size: 24px;
   font-weight: 400;
 }
+.modal-body__group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+.modal-body__group .modal-body__text {
+  min-width: 110px;
+  line-height: 2rem;
+  text-align: right;
+}
+.modal-body__group .modal-body__input {
+  margin: 0 0.5rem 0;
+  padding: 0.25rem 0.75rem;
+}
+.modal-body__inline {
+  display: flex;
+  width: -webkit-fill-available;
+}
+.modal-body__inline .modal-body__input {
+  width: 30px;
+}
+.modal-body__inline .modal-body__text {
+  min-width: unset;
+}
 .modal-body__text {
   margin: 0;
   font-size: 16px;
 }
 .modal-body__input {
   width: -webkit-fill-available;
-  height: 1.75rem;
-  margin-top: 0.5rem;
+  height: 1.5rem;
+  margin-top: 0.25rem;
   border: 0;
   border-radius: 0.75rem;
   padding: 0.25rem 1.25rem;
@@ -660,6 +696,14 @@ input, button, textarea, :focus {
   font-size: 14px;
   line-height: 1.75rem;
   font-weight: 600;
+}
+.modal-body__input--textarea {
+  resize: none;
+  height: 3rem;
+  overflow: visible;
+}
+.modal-body__input::placeholder {
+  color: #a7a7a7;
 }
 .modal-body__button {
   height: 2.25rem;
