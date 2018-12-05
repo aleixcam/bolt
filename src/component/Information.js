@@ -96,9 +96,9 @@ class Information extends Component {
                             <div style={{backgroundImage: 'url("'+this.state.cover+'")'}}></div>
                         </div>
                         <div className="track__text">
-                            <h1>{(this.state.title.startsWith('%') ? this.state.title.substr(1) : this.state.title) || '\xa0'}</h1>
-                            <p>{this.state.artist || '\xa0'}</p>
-                            <p>{this.state.album || '\xa0'}</p>
+                            <h1>{(this.state.title ? (this.state.title.startsWith('%') ? this.state.title.substr(1) : this.state.title) : this.state.filename) || '\xa0'}</h1>
+                            <p>{(this.state.artist ? (this.state.artist.startsWith('%') ? this.state.artist.substr(1) : this.state.artist) : '\xa0')}</p>
+                            <p>{(this.state.album ? (this.state.album.startsWith('%') ? this.state.album.substr(1) : this.state.album) : '\xa0')}</p>
                         </div>
                     </section>
                 )}

@@ -90,13 +90,13 @@ const SCAN = {
 
     getFormat(path, callback) {
         return mm.parseFile(path)
-            .then(metadata => callback(null, metadata.common))
+            .then(metadata => callback(null, metadata.format))
             .catch(err => callback(err.message))
     },
 
     getMetadata(path, callback) {
         return mm.parseFile(path)
-            .then(metadata => callback(null, metadata.format))
+            .then(metadata => callback(null, metadata.common))
             .catch(err => callback(err.message))
     },
 

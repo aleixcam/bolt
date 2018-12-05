@@ -132,6 +132,7 @@ const LOGIC = {
             info.title = '%' + this.countSongs(songs)
         } else {
             info.path = songs[0].path
+            info.filename = songs[0].filename
             info.encodersettings = songs[0].encodersettings
         }
 

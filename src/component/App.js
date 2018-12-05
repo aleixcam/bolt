@@ -331,7 +331,7 @@ class App extends Component {
                         <div style={{backgroundImage: 'url("'+this.state.currentSong.cover+'")'}}></div>
                     </div>
                     <div className="track__text">
-                        <h1>{this.state.currentSong.title || '\xa0'}</h1>
+                        <h1>{this.state.currentSong.title || this.state.currentSong.filename || '\xa0'}</h1>
                         <p>{this.state.currentSong.artist || '\xa0'}</p>
                         <p>{this.state.currentSong.album || '\xa0'}</p>
                     </div>

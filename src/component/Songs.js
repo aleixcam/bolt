@@ -33,7 +33,7 @@ class Songs extends Component {
                         return <tr key={song.id} className={'selectable song '+(index % 2 ? 'song--even' : 'song--odd')} onDoubleClick={() => this.props.onPlay([song])}>
                             <td style={{ display: 'none' }}><input type="hidden" value={song.id} /></td>
                             {this.state.columns.map(column => {
-                                return <td key={column} className={"song__cell song__cell--"+column}>{song[column]}</td>
+                                return <td key={column} className={"song__cell song__cell--"+column}>{(column === 'title' ? (song.title || song.filename) : song[column])}</td>
                             })}
                         </tr>
                     })
