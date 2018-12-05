@@ -84,7 +84,7 @@ const SCAN = {
     },
 
     getMetadata(path, callback) {
-        return mm.parseFile(path)
+        return mm.parseFile(path, {native: true})
             .then(metadata => callback(null, metadata.common))
             .catch(err => callback(err.message))
     },
@@ -125,7 +125,7 @@ const SCAN = {
                     tags.TRCK = info[key].no + '/' + (info[key].of || '')
                     break;
                 case 'comment':
-                    tags.COMM = info[key]
+                    tags.COMM = { text: info[key] }
                     break;
             }
         }

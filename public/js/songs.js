@@ -70,7 +70,6 @@ const SONGS = {
     update(song, query) {
         const songsTable = new SongsTable()
         song = songsTable.get(song.id)
-        console.log(query);
         for (var key in query) {
             if (song.hasOwnProperty(key)) {
                 switch (key) {
