@@ -236,7 +236,7 @@ app.on('ready', () => {
         let pending = songs.length
 		songs.forEach((song, index) => {
 			SCAN.getMetadata(song.path, (err, data) => {
-                if (err) console.error(err.message)
+                if (err) throw Error(err)
 
                 const genre = data.genre && data.genre[0]
                 delete data.genre
@@ -261,6 +261,22 @@ app.on('ready', () => {
 
 			const data = SCAN.getEncoded(song.path)
 			event.sender.send('scan:getEncoded:reply'+song.id, data)
+		} catch (e) {
+			event.sender.send('electron:error', e.message)
+		}
+	})
+
+	ipcMain.on('scan:getFormat', function(event, song) {
+		try {
+			if (!song || typeof song !== 'object') throw Error('Invalid argument passed as song')
+			if (!song.id || typeof song.id !== 'number') throw Error('Invalid id value in song argument')
+			if (!song.path || typeof song.path !== 'string') throw Error('Invalid path value in song argument')
+
+			SCAN.getFormat(song.path, (err, data) => {
+                if (err) throw Error(err)
+
+                event.sender.send('scan:getFormat:reply'+song.id, data)
+            })
 		} catch (e) {
 			event.sender.send('electron:error', e.message)
 		}

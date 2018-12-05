@@ -83,15 +83,21 @@ const SCAN = {
     	})
     },
 
-    getMetadata(path, callback) {
-        return mm.parseFile(path, {native: true})
+    getEncoded(path) {
+        const song = fs.readFileSync(path)
+        return `data:audio/mp3;base64,${Buffer.from(song).toString('base64')}`
+    },
+
+    getFormat(path, callback) {
+        return mm.parseFile(path)
             .then(metadata => callback(null, metadata.common))
             .catch(err => callback(err.message))
     },
 
-    getEncoded(path) {
-        const song = fs.readFileSync(path)
-        return `data:audio/mp3;base64,${Buffer.from(song).toString('base64')}`
+    getMetadata(path, callback) {
+        return mm.parseFile(path)
+            .then(metadata => callback(null, metadata.format))
+            .catch(err => callback(err.message))
     },
 
     editMetadata(song, info, callback) {

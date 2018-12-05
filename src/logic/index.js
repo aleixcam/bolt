@@ -60,6 +60,15 @@ const LOGIC = {
         })
     },
 
+    getFormat(song) {
+        return new Promise(resolve => {
+            window.ipcRenderer.send('scan:getFormat', song)
+            window.ipcRenderer.on('scan:getFormat:reply'+song.id, (event, data) => {
+                resolve(data)
+            })
+        })
+    },
+
     hydrateAlbum(album) {
         if (!album.album) album.album = 'Unknown album'
         album.artist = album.songs[0].albumartist || 'Unknown artist'
