@@ -26,6 +26,14 @@ html {
     user-select: auto;
     overflow: auto;
 
+    .ribbon * {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border: 0;
+        z-index: 1000;
+    }
+
     .navbar {
         position: sticky;
         top: 0;
@@ -35,7 +43,7 @@ html {
         padding: 0 5rem;
         height: calc(#{$header-height} * .75);
         background-color: darken($color-background, 9%);
-        z-index: 1000;
+        z-index: 800;
 
         &__title {
             margin: 0;
@@ -229,7 +237,11 @@ html {
         display: flex;
         justify-content: center;
         align-items: center;
-        font-size: 12px;
-        padding: 2rem;
+        padding: 1rem;
+        background-color: darken($color-background, 7%);
+
+        &__link {
+            color: $color-text;
+        }
     }
 }
