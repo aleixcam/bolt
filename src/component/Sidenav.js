@@ -23,7 +23,10 @@ class Sidenav extends Component {
         return <nav className={this.state.class}>
             <ul className={this.state.class+'__menu'}>
                 {this.props.children && this.props.children.length > 0 && (
-                    this.props.children.map((link, key) => React.cloneElement(link, {key, ...this.checkActive(link)}))
+                    this.props.children.map((link, key) => {
+                        if (link) return React.cloneElement(link, {key, ...this.checkActive(link)})
+                        return ''
+                    })
                 )}
             </ul>
         </nav>

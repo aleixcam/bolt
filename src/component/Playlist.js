@@ -6,7 +6,7 @@ function Track(props) {
             <div style={{backgroundImage: 'url("'+props.track.cover+'")'}}></div>
         </div>
         <div className="track__text">
-            <h1>{props.track.title || '\xa0'}</h1>
+            <h1>{props.track.title || props.track.filename || '\xa0'}</h1>
             <p>{props.track.artist || '\xa0'}</p>
         </div>
     </li>

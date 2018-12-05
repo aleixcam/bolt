@@ -62,6 +62,7 @@
     "lilli": "file:../lilli",
     "music-metadata": "^3.2.0",
     "node-fetch": "^2.3.0",
+    "node-id3": "^0.1.7",
     "pluralize": "^7.0.0",
     "react": "16.4.0",
     "react-contexify": "^4.0.0",

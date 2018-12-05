@@ -60,6 +60,15 @@ const LOGIC = {
         })
     },
 
+    getFormat(song) {
+        return new Promise(resolve => {
+            window.ipcRenderer.send('scan:getFormat', song)
+            window.ipcRenderer.on('scan:getFormat:reply'+song.id, (event, data) => {
+                resolve(data)
+            })
+        })
+    },
+
     hydrateAlbum(album) {
         if (!album.album) album.album = 'Unknown album'
         album.artist = album.songs[0].albumartist || 'Unknown artist'
@@ -94,7 +103,7 @@ const LOGIC = {
         })
     },
 
-    retrieveInfo(songs) {
+    retrieveInfo(songs, callback) {
         const info = {
             title: songs[0].title,
             artist: songs[0].artist,
@@ -117,20 +126,41 @@ const LOGIC = {
             if (song.genre !== info.genre) info.genre = '%Various genres'
             if (song.year !== info.year) info.year = '%Various years'
             if (song.comment !== info.comment) info.comment = '%Various comments'
-            if (song.disk !== info.disk) info.disk = '%-'
-            if (song.disks !== info.disks) info.disks = '%-'
-            if (song.track !== info.track) info.track = '%-'
-            if (song.tracks !== info.tracks) info.tracks = '%-'
         })
 
         if (songs.length > 1) {
             info.title = '%' + this.countSongs(songs)
+            callback(info)
         } else {
             info.path = songs[0].path
-            info.encodersettings = songs[0].encodersettings
+            info.filename = songs[0].filename
+            this.getFormat(songs[0])
+                .then(data => {
+                    info.format = data.dataformat.toUpperCase()
+                    info.duration = this.secondsToTime(data.duration)
+                    info.bitrate = `${data.bitrate / 100} kbps`
+                    info.samplerate = `${data.sampleRate / 100} kHz`
+                    info.channels = data.numberOfChannels
+                    info.tag = data.tagTypes[0]
+                    info.encoder = data.encoder
+                    callback(info)
+                })
         }
+    },
 
-        return info
+    retrieveCovers(songs) {
+        const covers = []
+        songs.forEach(song => {
+            if (!covers.includes(song.cover) && song.cover.startsWith('data:image')) {
+                covers.push(song.cover)
+            }
+        })
+
+        return covers
+    },
+
+    retrieveFormat(song) {
+        console.log(song);
     }
 }
 

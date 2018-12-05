@@ -7,7 +7,8 @@ class Song extends Entity {
 
         this.id = query.id || Date.now()
         this.path = query.path
-        this.title = query.title || path.basename(query.path).replace(/\.[^/.]+$/, '')
+        this.filename = query.filename || path.basename(query.path).replace(/\.[^/.]+$/, '')
+        this.title = query.title || null
         this.album = query.album || null
         this.artist = query.artist || null
         this.genre = query.genre || null
