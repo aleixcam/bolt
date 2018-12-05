@@ -103,7 +103,7 @@ const LOGIC = {
         })
     },
 
-    retrieveInfo(songs) {
+    retrieveInfo(songs, callback) {
         const info = {
             title: songs[0].title,
             artist: songs[0].artist,
@@ -130,13 +130,22 @@ const LOGIC = {
 
         if (songs.length > 1) {
             info.title = '%' + this.countSongs(songs)
+            callback(info)
         } else {
             info.path = songs[0].path
             info.filename = songs[0].filename
-            info.encodersettings = songs[0].encodersettings
+            this.getFormat(songs[0])
+                .then(data => {
+                    info.format = data.dataformat.toUpperCase()
+                    info.duration = this.secondsToTime(data.duration)
+                    info.bitrate = `${data.bitrate / 100} kbps`
+                    info.samplerate = `${data.sampleRate / 100} kHz`
+                    info.channels = data.numberOfChannels
+                    info.tag = data.tagTypes[0]
+                    info.encoder = data.encoder
+                    callback(info)
+                })
         }
-
-        return info
     },
 
     retrieveCovers(songs) {

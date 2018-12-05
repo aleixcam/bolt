@@ -18,10 +18,12 @@ class Information extends Component {
 
     componentWillMount() {
         window.ipcRenderer.on('modal:information', (event, songs) => {
-            const information = LOGIC.retrieveInfo(songs)
             const covers = LOGIC.retrieveCovers(songs)
-            this.setState({ open: true, songs, ...information, covers }, () => {
-                window.Nucleus.track("OPENED_INFORMATION")
+            LOGIC.retrieveInfo(songs, info => {
+                console.log(info);
+                this.setState({ open: true, songs, covers, ...info }, () => {
+                    window.Nucleus.track("OPENED_INFORMATION")
+                })
             })
         })
     }
@@ -173,6 +175,38 @@ class Information extends Component {
                     </section>
                     {this.state.songs.length < 2 && (
                         <section className={'modal-body__view'+(this.state.view==='File'?' modal-body__view--active':'')}>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Format</label>
+                                <input type="text" className="modal-body__input" value={this.state.format} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Duration</label>
+                                <input type="text" className="modal-body__input" value={this.state.duration} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Bit rate</label>
+                                <input type="text" className="modal-body__input" value={this.state.bitrate} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Sample rate</label>
+                                <input type="text" className="modal-body__input" value={this.state.samplerate} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Channels</label>
+                                <input type="text" className="modal-body__input" value={this.state.channels} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Metadata tags</label>
+                                <input type="text" className="modal-body__input" value={this.state.tag} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Encoder</label>
+                                <input type="text" className="modal-body__input" value={this.state.encoder} readOnly />
+                            </div>
+                            <div className="modal-body__group">
+                                <label className="modal-body__text">Location</label>
+                                <textarea className="modal-body__input modal-body__input--textarea" value={this.state.path} readOnly />
+                            </div>
                         </section>
                     )}
                 </section>

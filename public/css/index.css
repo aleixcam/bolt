@@ -637,6 +637,7 @@ input, button, textarea, :focus {
   grid-row: 2;
   padding: 0.75rem 1.5rem;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 .modal-body__view {
   display: none;
@@ -710,6 +711,14 @@ input, button, textarea, :focus {
   resize: none;
   height: 3rem;
   overflow: visible;
+}
+.modal-body__input--textarea:read-only {
+  height: auto;
+}
+.modal-body__input:read-only {
+  margin: 0;
+  background-color: transparent;
+  cursor: default;
 }
 .modal-body__input::placeholder {
   color: #a7a7a7;
