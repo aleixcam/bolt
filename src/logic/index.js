@@ -1,6 +1,13 @@
 import pluralize from 'pluralize'
 
 const LOGIC = {
+
+    /**
+     *
+     * @param {string} track
+     *
+     * @returns {string}
+     */
     formatLabel(label) {
         if (typeof label !== 'string') throw Error(`Invalid argument ${label}`)
 
@@ -12,6 +19,12 @@ const LOGIC = {
         return words.join(' ')
     },
 
+    /**
+     *
+     * @param {number} time
+     *
+     * @returns {string}
+     */
     secondsToTime(time) {
         if (typeof time !== 'number') throw Error(`Invalid argument ${time}`)
 
@@ -20,6 +33,12 @@ const LOGIC = {
         return minutes + ':' + seconds;
     },
 
+    /**
+     *
+     * @param {string} group
+     *
+     * @returns {Object}
+     */
     setGroupContext(group) {
         const view = pluralize.singular(group)
         const renderer = 'groupBy' + this.formatLabel(group)
@@ -28,6 +47,12 @@ const LOGIC = {
         return { view, renderer, titles }
     },
 
+    /**
+     *
+     * @param {Array} songs
+     *
+     * @returns {string}
+     */
     countSongs(songs) {
         if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
 
@@ -35,6 +60,12 @@ const LOGIC = {
         return count + ' ' + (count === 1 ? 'song' : 'songs')
     },
 
+    /**
+     *
+     * @param {Array} albums
+     *
+     * @returns {string}
+     */
     countAlbums(albums) {
         if (!albums || !Array.isArray(albums)) throw Error(`Invalid argument ${albums}`)
 
@@ -42,6 +73,12 @@ const LOGIC = {
         return count + ' ' + (count === 1 ? 'album' : 'albums')
     },
 
+    /**
+     *
+     * @param {Song} song
+     *
+     * @returns {Promise}
+     */
     getMetadata(song) {
         return new Promise(resolve => {
             window.ipcRenderer.send('scan:getMetadata', song)
@@ -51,6 +88,12 @@ const LOGIC = {
         })
     },
 
+    /**
+     *
+     * @param {Song} song
+     *
+     * @returns {Promise}
+     */
     getEncoded(song) {
         return new Promise(resolve => {
             window.ipcRenderer.send('scan:getEncoded', song)
@@ -60,6 +103,12 @@ const LOGIC = {
         })
     },
 
+    /**
+     *
+     * @param {Song} song
+     *
+     * @returns {Promise}
+     */
     getFormat(song) {
         return new Promise(resolve => {
             window.ipcRenderer.send('scan:getFormat', song)
@@ -69,6 +118,12 @@ const LOGIC = {
         })
     },
 
+    /**
+     *
+     * @param {Object} album
+     *
+     * @returns {Object}
+     */
     hydrateAlbum(album) {
         if (!album.album) album.album = 'Unknown album'
         album.artist = album.songs[0].albumartist || 'Unknown artist'
@@ -80,6 +135,12 @@ const LOGIC = {
         return album
     },
 
+    /**
+     *
+     * @param {Object} group
+     *
+     * @returns {Object}
+     */
     hydrateGroup(group) {
         group.songs = []
         group.albums.forEach((album, index) => {
@@ -92,6 +153,11 @@ const LOGIC = {
         return group
     },
 
+    /**
+     *
+     * @param {Array} songs
+     * @param {Function} callback
+     */
     deleteSongs(songs, callback) {
         if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
         if (typeof callback !== 'function') throw Error('callback is not a function');
@@ -106,6 +172,11 @@ const LOGIC = {
         })
     },
 
+    /**
+     *
+     * @param {Array} songs
+     * @param {Function} callback
+     */
     retrieveInfo(songs, callback) {
         if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
         if (typeof callback !== 'function') throw Error('callback is not a function');
@@ -154,6 +225,12 @@ const LOGIC = {
         }
     },
 
+    /**
+     *
+     * @param {Array} songs
+     *
+     * @returns {Array}
+     */
     retrieveCovers(songs) {
         if (!songs || !Array.isArray(songs)) throw Error(`Invalid argument ${songs}`)
 
