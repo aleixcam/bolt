@@ -47,11 +47,24 @@ html {
 
         &__title {
             margin: 0;
-            color: $color-secondary;
-            text-transform: uppercase;
+            color: $color-text;
             text-decoration: none;
-            font-weight: 700;
-            font-size: 22px;
+            font-weight: 400;
+            font-size: 28px;
+        }
+
+        &-links {
+            display: flex;
+            justify-content: flex-end;
+            margin-right: 3rem;
+
+            &__link {
+                margin: 0;
+                color: $color-secondary;
+                text-decoration: none;
+                font-weight: 700;
+                font-size: 14px;
+            }
         }
 
         &__logo {
