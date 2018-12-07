@@ -114,3 +114,90 @@ describe('count songs and albums', () => {
         })
     })
 })
+
+describe('delete songs', () => {
+    test('fail on empty argument', () => {
+        let songs
+        expect(() => {
+            LOGIC.deleteSongs(songs)
+        }).toThrow(`Invalid argument ${songs}`);
+    })
+
+    test('fail on non array argument', () => {
+        let songs = ''
+        expect(() => {
+            LOGIC.deleteSongs(songs)
+        }).toThrow(`Invalid argument ${songs}`);
+    })
+
+    test('fail on non-function callback', () => {
+        expect(() => {
+            LOGIC.deleteSongs([], '')
+        }).toThrow('callback is not a function');
+    })
+})
+
+describe('retrieve information from songs', () => {
+    test('fail on empty argument', () => {
+        let songs
+        expect(() => {
+            LOGIC.retrieveInfo(songs)
+        }).toThrow(`Invalid argument ${songs}`);
+    })
+
+    test('fail on non array argument', () => {
+        let songs = ''
+        expect(() => {
+            LOGIC.retrieveInfo(songs)
+        }).toThrow(`Invalid argument ${songs}`);
+    })
+
+    test('fail on non-function callback', () => {
+        expect(() => {
+            LOGIC.retrieveInfo([], '')
+        }).toThrow('callback is not a function');
+    })
+})
+
+describe('retrieve covers from songs', () => {
+    let songs
+    beforeEach(() => {
+        songs = [
+            {
+                id: 1,
+                cover: 'data:image/asdf'
+            },
+            {
+                id: 2,
+                cover: 'placeholder'
+            },
+            {
+                id: 3,
+                cover: 'data:image/qwerty'
+            }
+        ]
+    })
+
+    test('retrieve only real encoded images', () => {
+        const expected = ['data:image/asdf', 'data:image/qwerty']
+        expect(LOGIC.retrieveCovers(songs)).toEqual(expect.arrayContaining(expected))
+    })
+
+    test('empty array with no songs passed', () => {
+        expect(LOGIC.retrieveCovers([])).toEqual(expect.arrayContaining([]))
+    })
+
+    test('fail on empty argument', () => {
+        let songs
+        expect(() => {
+            LOGIC.retrieveCovers(songs)
+        }).toThrow(`Invalid argument ${songs}`);
+    })
+
+    test('fail on non array argument', () => {
+        let songs = ''
+        expect(() => {
+            LOGIC.retrieveCovers(songs)
+        }).toThrow(`Invalid argument ${songs}`);
+    })
+})
