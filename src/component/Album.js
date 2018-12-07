@@ -5,7 +5,7 @@ import Header from './Header'
 function Album(props) {
     return <article className="album">
         <section className="cover">
-            <div className="cover__image">
+            <div className="cover__image" onDoubleClick={() => props.onPlay(props.album.songs)}>
                 <div style={{backgroundImage: 'url("'+props.album.cover+'")'}}></div>
             </div>
             <p className="cover__title">{props.album.count}</p>
