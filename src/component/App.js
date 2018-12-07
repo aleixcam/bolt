@@ -9,6 +9,7 @@ import Groups from './Groups'
 import Player from './Player'
 import Playlist from './Playlist'
 import Parameters from './Parameters'
+import Information from './Information'
 import LOGIC from '../logic'
 import PLAYER from '../logic/player'
 import createSelection from '../logic/selection'
@@ -20,7 +21,7 @@ class App extends Component {
             version: false,
             songs: [],
             selection: createSelection(),
-            view: 'Artists',
+            view: 'Albums',
             currentSong: {},
             currentPlaylist: [],
             open: false,
@@ -41,6 +42,10 @@ class App extends Component {
         window.ipcRenderer.on('alert:scanEnd', (event, alert) => {
             this.retrieveSongs()
             if (alert) toast.success('Your library has been successfully updated')
+        })
+
+        window.ipcRenderer.on('songs:update:reply', event => {
+            this.retrieveSongs()
         })
     }
 
@@ -94,7 +99,7 @@ class App extends Component {
     handleMainClick = event => {
         let result = false;
         for (var i = 0; i < event.path.length; i++) {
-            if (event.path[i].classList && (event.path[i].classList.contains('selectable') || event.path[i].classList.contains('react-contexify'))) {
+            if (event.path[i].classList && (event.path[i].classList.contains('selectable') || event.path[i].classList.contains('modal') || event.path[i].classList.contains('react-contexify'))) {
                 result = true
                 break
             }
@@ -271,6 +276,11 @@ class App extends Component {
         })
     }
 
+    handleInfoSongs = () => {
+        const songs = this.handleSelection([])
+        window.ipcRenderer.send('songs:information', songs)
+    }
+
 
     /******************************************************************************************/
     /**** RENDER ******************************************************************************/
@@ -321,7 +331,7 @@ class App extends Component {
                         <div style={{backgroundImage: 'url("'+this.state.currentSong.cover+'")'}}></div>
                     </div>
                     <div className="track__text">
-                        <h1>{this.state.currentSong.title || '\xa0'}</h1>
+                        <h1>{this.state.currentSong.title || this.state.currentSong.filename || '\xa0'}</h1>
                         <p>{this.state.currentSong.artist || '\xa0'}</p>
                         <p>{this.state.currentSong.album || '\xa0'}</p>
                     </div>
@@ -342,14 +352,18 @@ class App extends Component {
                 </section>
             </aside>
 
+            <Parameters version={this.state.version} />
+            <Information />
+
             <Menu id="songs">
                 <Item onClick={this.handlePlayNext}>Play next</Item>
                 <Item onClick={this.handleAddSongsToPlaylist}>Add to current playlist</Item>
-                <Separator/>
+                <Separator />
+                <Item onClick={this.handleInfoSongs}>Information</Item>
+                <Separator />
                 <Item onClick={this.handleDeleteSongs}>Delete from library</Item>
             </Menu>
 
-            <Parameters version={this.state.version} />
             <ToastContainer autoClose={4000} pauseOnVisibilityChange={false} draggable={false} />
         </div>
     }
