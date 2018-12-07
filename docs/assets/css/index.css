@@ -49,11 +49,22 @@ html {
 }
 .landing .navbar__title {
   margin: 0;
+  color: #ffffff;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 28px;
+}
+.landing .navbar-links {
+  display: flex;
+  justify-content: flex-end;
+  margin-right: 3rem;
+}
+.landing .navbar-links__link {
+  margin: 0;
   color: #a7b59b;
-  text-transform: uppercase;
   text-decoration: none;
   font-weight: 700;
-  font-size: 22px;
+  font-size: 14px;
 }
 .landing .navbar__logo {
   height: 40px;
