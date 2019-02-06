@@ -59,7 +59,7 @@
     "electron-is-dev": "0.3.0",
     "electron-nucleus": "^1.10.0",
     "fs-extra": "^7.0.1",
-    "lilli": "file:../lilli",
+    "lilli": "^0.2.4",
     "music-metadata": "^3.2.0",
     "node-fetch": "^2.3.0",
     "node-id3": "^0.1.7",

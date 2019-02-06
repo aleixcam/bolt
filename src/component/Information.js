@@ -20,12 +20,15 @@ class Information extends Component {
         window.ipcRenderer.on('modal:information', (event, songs) => {
             const covers = LOGIC.retrieveCovers(songs)
             LOGIC.retrieveInfo(songs, info => {
-                console.log(info);
                 this.setState({ open: true, songs, covers, ...info }, () => {
                     window.Nucleus.track("OPENED_INFORMATION")
                 })
             })
         })
+    }
+
+    handleOpen = () => {
+        this.setState({ view: 'Details' })
     }
 
     handleMenuClick = view => {
@@ -84,7 +87,7 @@ class Information extends Component {
     }
 
     render() {
-        return this.state.open && <Modal isOpen={this.state.open} className="modal" overlayClassName="modal-overlay">
+        return this.state.open && <Modal isOpen={this.state.open} className="modal" overlayClassName="modal-overlay" onAfterOpen={this.handleOpen}>
             <Sidenav onClick={this.handleMenuClick} active={this.state.view}>
                 <li>Details</li>
                 <li>Cover</li>
@@ -110,106 +113,107 @@ class Information extends Component {
                 </button>
             </section>
 
-
-                <section className="modal-body">
-                    <section className={'modal-body__view'+(this.state.view==='Details'?' modal-body__view--active':'')}>
-                        <form ref={this.songsForm} className="modal-body__section">
+            <section className="modal-body">
+                <section className={'modal-body__view'+(this.state.view==='Details'?' modal-body__view--active':'')}>
+                    <form ref={this.songsForm} className="modal-body__section">
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Title</label>
+                            <input type="text" className="modal-body__input" {...this.setInputProps('title')} />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Artist</label>
+                            <input type="text" className="modal-body__input" {...this.setInputProps('artist')} />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Album</label>
+                            <input type="text" className="modal-body__input" {...this.setInputProps('album')} />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Album artist</label>
+                            <input type="text" className="modal-body__input" {...this.setInputProps('albumartist')} />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Genre</label>
+                            <input type="text" className="modal-body__input" {...this.setInputProps('genre')} />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Year</label>
+                            <input type="text" className="modal-body__input" {...this.setInputProps('year')} />
+                        </div>
+                        {this.state.songs.length < 2 && (
                             <div className="modal-body__group">
-                                <label className="modal-body__text">Title</label>
-                                <input type="text" className="modal-body__input" {...this.setInputProps('title')} />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Artist</label>
-                                <input type="text" className="modal-body__input" {...this.setInputProps('artist')} />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Album</label>
-                                <input type="text" className="modal-body__input" {...this.setInputProps('album')} />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Album artist</label>
-                                <input type="text" className="modal-body__input" {...this.setInputProps('albumartist')} />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Genre</label>
-                                <input type="text" className="modal-body__input" {...this.setInputProps('genre')} />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Year</label>
-                                <input type="text" className="modal-body__input" {...this.setInputProps('year')} />
-                            </div>
-                            {this.state.songs.length < 2 && (
-                                <div className="modal-body__group">
-                                    <label className="modal-body__text">Track</label>
-                                    <div className="modal-body__inline">
-                                        <input type="text" className="modal-body__input" {...this.setInputProps('track')} />
-                                        <label className="modal-body__text">of</label>
-                                        <input type="text" className="modal-body__input" {...this.setInputProps('tracks')} />
-                                    </div>
+                                <label className="modal-body__text">Track</label>
+                                <div className="modal-body__inline">
+                                    <input type="text" className="modal-body__input" {...this.setInputProps('track')} />
+                                    <label className="modal-body__text">of</label>
+                                    <input type="text" className="modal-body__input" {...this.setInputProps('tracks')} />
                                 </div>
-                            )}
-                            {this.state.songs.length < 2 && (
-                                <div className="modal-body__group">
-                                    <label className="modal-body__text">Disk</label>
-                                    <div className="modal-body__inline">
-                                        <input type="text" className="modal-body__input" {...this.setInputProps('disk')} />
-                                        <label className="modal-body__text">of</label>
-                                        <input type="text" className="modal-body__input" {...this.setInputProps('disks')} />
-                                    </div>
-                                </div>
-                            )}
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Comment</label>
-                                <textarea className="modal-body__input modal-body__input--textarea" {...this.setInputProps('comment')} />
                             </div>
-                        </form>
-                    </section>
-                    <section className={'modal-body__view'+(this.state.view==='Cover'?' modal-body__view--active':'')}>
-                        {this.state.covers && this.state.covers.length > 0 && (
-                            this.state.covers.map((cover, index) => <article key={index} className="cover">
-                                <div className="cover__image">
-                                    <div style={{backgroundImage: 'url("'+cover+'")'}}></div>
-                                </div>
-                            </article>)
                         )}
-                    </section>
-                    {this.state.songs.length < 2 && (
-                        <section className={'modal-body__view'+(this.state.view==='File'?' modal-body__view--active':'')}>
+                        {this.state.songs.length < 2 && (
                             <div className="modal-body__group">
-                                <label className="modal-body__text">Format</label>
-                                <input type="text" className="modal-body__input" value={this.state.format} readOnly />
+                                <label className="modal-body__text">Disk</label>
+                                <div className="modal-body__inline">
+                                    <input type="text" className="modal-body__input" {...this.setInputProps('disk')} />
+                                    <label className="modal-body__text">of</label>
+                                    <input type="text" className="modal-body__input" {...this.setInputProps('disks')} />
+                                </div>
                             </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Duration</label>
-                                <input type="text" className="modal-body__input" value={this.state.duration} readOnly />
+                        )}
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Comment</label>
+                            <textarea className="modal-body__input modal-body__input--textarea" {...this.setInputProps('comment')} />
+                        </div>
+                    </form>
+                </section>
+
+                <section className={'modal-body__view'+(this.state.view==='Cover'?' modal-body__view--active':'')}>
+                    {this.state.covers && this.state.covers.length > 0 && (
+                        this.state.covers.map((cover, index) => <article key={index} className="cover">
+                            <div className="cover__image">
+                                <div style={{backgroundImage: 'url("'+cover+'")'}}></div>
                             </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Bit rate</label>
-                                <input type="text" className="modal-body__input" value={this.state.bitrate} readOnly />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Sample rate</label>
-                                <input type="text" className="modal-body__input" value={this.state.samplerate} readOnly />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Channels</label>
-                                <input type="text" className="modal-body__input" value={this.state.channels} readOnly />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Metadata tags</label>
-                                <input type="text" className="modal-body__input" value={this.state.tag} readOnly />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Encoder</label>
-                                <input type="text" className="modal-body__input" value={this.state.encoder} readOnly />
-                            </div>
-                            <div className="modal-body__group">
-                                <label className="modal-body__text">Location</label>
-                                <textarea className="modal-body__input modal-body__input--textarea" value={this.state.path} readOnly />
-                            </div>
-                        </section>
+                        </article>)
                     )}
                 </section>
+
+                {this.state.songs.length < 2 && (
+                    <section className={'modal-body__view'+(this.state.view==='File'?' modal-body__view--active':'')}>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Format</label>
+                            <input type="text" className="modal-body__input" value={this.state.format} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Duration</label>
+                            <input type="text" className="modal-body__input" value={this.state.duration} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Bit rate</label>
+                            <input type="text" className="modal-body__input" value={this.state.bitrate} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Sample rate</label>
+                            <input type="text" className="modal-body__input" value={this.state.samplerate} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Channels</label>
+                            <input type="text" className="modal-body__input" value={this.state.channels} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Metadata tags</label>
+                            <input type="text" className="modal-body__input" value={this.state.tag} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Encoder</label>
+                            <input type="text" className="modal-body__input" value={this.state.encoder} readOnly />
+                        </div>
+                        <div className="modal-body__group">
+                            <label className="modal-body__text">Location</label>
+                            <textarea className="modal-body__input modal-body__input--textarea" value={this.state.path} readOnly />
+                        </div>
+                    </section>
+                )}
+            </section>
         </Modal>
     }
 }
