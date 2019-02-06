@@ -32,9 +32,9 @@ const TASKS = {
         event.sender.send('songs:delete:reply', confirm)
     },
 
-    update(songs, info, callback) {
+    update(info, songs, callback) {
+        console.log(arguments);
         let pending = songs.length
-        console.log('task');
         songs.forEach(song => {
             SCAN.editMetadata(song, info, path => {
                 SONGS.update(song, {path, ...info})

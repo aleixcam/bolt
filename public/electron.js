@@ -68,9 +68,7 @@ function createMainWindow() {
 
 function createBackgroundWindow(timestamp) {
 	view[timestamp] = new BrowserWindow({
-		width: 400,
-		height: 400,
-		show: false,
+		show: false
 	})
 
 	if (isDev) {
@@ -78,8 +76,6 @@ function createBackgroundWindow(timestamp) {
 	} else {
 		view[timestamp].loadURL('file://' + path.join(__dirname, '../build/background.html'))
 	}
-
-    view[timestamp].on('closed', () => view[timestamp] = null)
 }
 
 function createMainMenu() {
@@ -166,13 +162,12 @@ function runInBackgroundWindow(channel, params) {
     createBackgroundWindow(timestamp)
 
 	view[timestamp].once('ready-to-show', () => {
-        // view[timestamp].show()
         view[timestamp].webContents.send('task:run', channel, params)
     })
 
     ipcMain.on('task:response', (event, response) => {
         event.sender.send(`${channel}:reply`, response)
-        view[timestamp].hide()
+        view[timestamp] = null
     })
 }
 
@@ -247,8 +242,8 @@ app.on('ready', () => {
 		event.sender.send('songs:groupByDecades:reply', decades)
 	})
 
-	ipcMain.on('songs:update', (event, songs, info) => {
-        runInBackgroundWindow('songs:update', { songs, info })
+	ipcMain.on('songs:update', (event, info, songs) => {
+        runInBackgroundWindow('songs:update', { info, songs })
     })
 
 	ipcMain.on('songs:delete', function(event, song) {

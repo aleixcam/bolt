@@ -62,7 +62,7 @@ class Information extends Component {
         }
 
         this.setState({ open: false }, () => {
-            window.ipcRenderer.send('songs:update', this.state.songs, info)
+            window.ipcRenderer.send('songs:update', info, this.state.songs)
             window.Nucleus.track("CLOSED_INFORMATION")
         })
     }
