@@ -11,11 +11,32 @@ const SCAN = require('./js/scan')
 const GitHub = require('./js/github')
 
 const git = new GitHub()
-let preloaderWindow
-let mainWindow;
+let view = {}
+
+function createPreloaderWindow() {
+	view.preloader = new BrowserWindow({
+		width: 240,
+		height: 240,
+		show: false,
+		frame: false,
+		resizable: false
+	})
+
+	if (isDev) {
+		view.preloader.loadURL('file://' + path.join(__dirname, './preloader.html'))
+	} else {
+		view.preloader.loadURL('file://' + path.join(__dirname, '../build/preloader.html'))
+	}
+
+    view.preloader.on('closed', () => view.preloader = null)
+
+	view.preloader.once('ready-to-show', () => {
+        view.preloader.show()
+    })
+}
 
 function createMainWindow() {
-    mainWindow = new BrowserWindow({
+    view.main = new BrowserWindow({
 		width: 1280,
 		height: 854,
 		show: false,
@@ -26,44 +47,39 @@ function createMainWindow() {
     })
 
 	if (isDev) {
-        mainWindow.loadURL('http://localhost:3000')
+        view.main.loadURL('http://localhost:3000')
 	} else {
-        mainWindow.loadURL('file://' + path.join(__dirname, '../build/index.html'))
+        view.main.loadURL('file://' + path.join(__dirname, '../build/index.html'))
 	}
 
-    mainWindow.on("closed", () => (mainWindow = null))
+    view.main.on("closed", () => view.main = null)
 
-	mainWindow.once('ready-to-show', () => {
-        preloaderWindow.hide()
-		mainWindow.show()
+	view.main.once('ready-to-show', () => {
+        view.preloader.hide()
+		view.main.show()
 
+        console.log(window);
         if (PARAMETERS.getByName('autoCheckVersion').value) {
             git.checkVersion()
-                .then(version => mainWindow.webContents.send('alert:newVerson', version))
+                .then(version => view.main.webContents.send('alert:newVerson', version))
         }
 	})
 }
 
-function createPreloaderWindow() {
-	preloaderWindow = new BrowserWindow({
-		width: 240,
-		height: 240,
+function createBackgroundWindow(timestamp) {
+	view[timestamp] = new BrowserWindow({
+		width: 400,
+		height: 400,
 		show: false,
-		frame: false,
-		resizable: false
 	})
 
 	if (isDev) {
-		preloaderWindow.loadURL('file://' + path.join(__dirname, './preloader.html'))
+		view[timestamp].loadURL('file://' + path.join(__dirname, './background.html'))
 	} else {
-		preloaderWindow.loadURL('file://' + path.join(__dirname, '../build/preloader.html'))
+		view[timestamp].loadURL('file://' + path.join(__dirname, '../build/background.html'))
 	}
 
-    preloaderWindow.on('closed', () => (preloaderWindow = null))
-
-	preloaderWindow.once('ready-to-show', () => {
-		preloaderWindow.show()
-	})
+    view[timestamp].on('closed', () => view[timestamp] = null)
 }
 
 function createMainMenu() {
@@ -76,7 +92,7 @@ function createMainMenu() {
                 {
                     label: 'Preferences',
                     accelerator: 'CmdOrCtrl+,',
-                    click () { mainWindow.webContents.send('modal:parameters') }
+                    click () { view.main.webContents.send('modal:parameters') }
                 },
                 { type: 'separator' },
                 {
@@ -138,10 +154,25 @@ function createMainMenu() {
 
 function updateLibrary() {
     const alert = PARAMETERS.getByName('scanAlert').value
-    mainWindow.webContents.send('alert:scanStart', alert)
+    view.main.webContents.send('alert:scanStart', alert)
     SCAN.scanLibrary(() => {
         Nucleus.track("SCANNED_LIBRARY")
-        mainWindow.webContents.send('alert:scanEnd', alert)
+        view.main.webContents.send('alert:scanEnd', alert)
+    })
+}
+
+function runInBackgroundWindow(channel, params) {
+    var timestamp = Date.now()
+    createBackgroundWindow(timestamp)
+
+	view[timestamp].once('ready-to-show', () => {
+        // view[timestamp].show()
+        view[timestamp].webContents.send('task:run', channel, params)
+    })
+
+    ipcMain.on('task:response', (event, response) => {
+        event.sender.send(`${channel}:reply`, response)
+        view[timestamp].hide()
     })
 }
 
@@ -216,16 +247,9 @@ app.on('ready', () => {
 		event.sender.send('songs:groupByDecades:reply', decades)
 	})
 
-	ipcMain.on('songs:update', function(event, songs, info) {
-        let pending = songs.length
-        songs.forEach(song => {
-            SCAN.editMetadata(song, info, path => {
-                SONGS.update(song, {path, ...info})
-                if (!--pending) event.sender.send('songs:update:reply')
-            })
-        })
-
-	})
+	ipcMain.on('songs:update', (event, songs, info) => {
+        runInBackgroundWindow('songs:update', { songs, info })
+    })
 
 	ipcMain.on('songs:delete', function(event, song) {
 		const confirm = SONGS.delete(song)
@@ -248,7 +272,7 @@ app.on('ready', () => {
                 delete data.comment
 
                 songs[index] = {...song, ...data, genre, cover, comment}
-				if (!--pending) mainWindow.webContents.send('modal:information', songs)
+				if (!--pending) view.main.webContents.send('modal:information', songs)
 			})
 		})
 	})
@@ -304,5 +328,5 @@ app.on('window-all-closed', () => {
 })
 
 app.on('activate', () => {
-    if (mainWindow === null) createMainWindow()
+    if (view.main === null) createMainWindow()
 })
